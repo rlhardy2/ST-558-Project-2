@@ -1,12 +1,17 @@
-ST558 Project 2
+ST 558 Project 2
 ================
 Matthew Sookoo and Rachel Hardy
 2022-10-10
 
-This sets up everything we need to run this in the console and save as
-an r script
+-   <a href="#requried-packages" id="toc-requried-packages">Requried
+    Packages</a>
+-   <a href="#data-retreival-and-parsing"
+    id="toc-data-retreival-and-parsing">Data Retreival and Parsing</a>
+-   <a href="#exploratory-data-analysis"
+    id="toc-exploratory-data-analysis">Exploratory Data Analysis</a>
 
-rmarkdown:: render(“ST558 Project 2.Rmd”, output_format =
-“github_document”, output_file = “README.md”, output_options =
-list(html_preview = FALSE, keep_html = FALSE, toc = TRUE, toc_depth =
-“1”, df_print = “tibble”))
+## Requried Packages
+
+## Data Retreival and Parsing
+
+## Exploratory Data Analysis

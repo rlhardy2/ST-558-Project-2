@@ -1,5 +1,5 @@
 ---
-title: "ST558 Project 2"
+title: "ST 558 Project 2"
 author: "Matthew Sookoo and Rachel Hardy"
 date: "2022-10-10"
 ---
@@ -8,10 +8,10 @@ date: "2022-10-10"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This sets up everything
-we need to run this in the console and save as an r script
+## Requried Packages
 
-rmarkdown:: render("ST558 Project 2.Rmd",
-                   output_format = "github_document",
-                   output_file = "README.md",
-                   output_options = list(html_preview = FALSE, keep_html = FALSE, toc = TRUE, toc_depth = "1", df_print = "tibble"))
+
+## Data Retreival and Parsing
+
+
+## Exploratory Data Analysis
