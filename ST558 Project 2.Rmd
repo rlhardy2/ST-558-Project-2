@@ -1,5 +1,5 @@
 ---
-title: "ST558 Project 2"
+title: "ST 558 Project 2"
 author: "Matthew Sookoo and Rachel Hardy"
 date: "2022-10-10"
 ---
@@ -7,6 +7,7 @@ date: "2022-10-10"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 
 # Introduction
 
@@ -21,4 +22,13 @@ Our goal with this project is to create a vignette about contacting an API using
 
 
 # Exploratory Data Analysis
+
+=======
+## Requried Packages
+
+
+## Data Retreival and Parsing
+
+
+## Exploratory Data Analysis
 
