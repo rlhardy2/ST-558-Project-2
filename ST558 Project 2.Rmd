@@ -23,12 +23,3 @@ Our goal with this project is to create a vignette about contacting an API using
 
 # Exploratory Data Analysis
 
-=======
-## Requried Packages
-
-
-## Data Retreival and Parsing
-
-
-## Exploratory Data Analysis
-
