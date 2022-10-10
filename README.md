@@ -14,8 +14,8 @@ Matthew Sookoo and Rachel Hardy
 # Introduction
 
 Our goal with this project is to create a vignette about contacting an
-API using functions you’ve created to query, parse, and return
-well-structured data. You’ll then use your functions to obtain data from
+API using functions we’ve created to query, parse, and return
+well-structured data. We’ll then use our functions to obtain data from
 the API and do some exploratory data analysis.
 
 # Required packages
