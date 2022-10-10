@@ -8,10 +8,17 @@ date: "2022-10-10"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This sets up everything
-we need to run this in the console and save as an r script
+# Introduction
 
-rmarkdown:: render("ST558 Project 2.Rmd",
-                   output_format = "github_document",
-                   output_file = "README.md",
-                   output_options = list(html_preview = FALSE, keep_html = FALSE, toc = TRUE, toc_depth = "1", df_print = "tibble"))
+Our goal with this project is to create a vignette about contacting an API using functions you’ve created to query, parse, and return well-structured data. You’ll then use your functions to obtain data from the API and do some exploratory data analysis. 
+
+# Required packages
+
+
+
+# Data Retreival and Parsing
+
+
+
+# Exploratory Data Analysis
+
