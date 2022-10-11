@@ -685,12 +685,15 @@ group_by(state) and we remove the Na values.</p>
 <pre class="r"><code>combined_tibble%&gt;%filter(longitude != &quot;Na&quot;, latitude != &quot;Na&quot;)%&gt;%
   mutate(longitude = as.numeric(longitude))%&gt;% 
   mutate(latitude = as.numeric(latitude))%&gt;%
-summarize(mean(longitude), mean(latitude))</code></pre>
-<pre><code>## # A tibble: 2 × 3
-##   state        `mean(longitude)` `mean(latitude)`
-##   &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt;
-## 1 North Dakota             -99.3             47.2
-## 2 Wisconsin                -89.1             43.7</code></pre>
+summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))</code></pre>
+<pre><code>## # A tibble: 2 × 5
+##   state        `mean(longitude)` `mean(latitude)` `sd(longitude)` `sd(latitude)`
+##   &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt;           &lt;dbl&gt;          &lt;dbl&gt;
+## 1 North Dakota             -99.3             47.2            2.39          0.554
+## 2 Wisconsin                -89.1             43.7            1.33          0.853</code></pre>
+</div>
+<div id="plots" class="section level2">
+<h2>Plots</h2>
 </div>
 </div>
 

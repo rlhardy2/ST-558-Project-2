@@ -266,9 +266,11 @@ Next we create some numerical summaries for the mean of the longitude and latitu
 combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
   mutate(longitude = as.numeric(longitude))%>% 
   mutate(latitude = as.numeric(latitude))%>%
-summarize(mean(longitude), mean(latitude))
+summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
   
 ```
+
+## Plots
 
 
 

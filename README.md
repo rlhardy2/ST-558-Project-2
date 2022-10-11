@@ -31,6 +31,7 @@ Matthew Sookoo and Rachel Hardy
     Exploratory Analysis</a>
     -   <a href="#contingency-table" id="toc-contingency-table">contingency
         table</a>
+    -   <a href="#plots" id="toc-plots">Plots</a>
 
 # Introduction
 
@@ -379,11 +380,13 @@ group_by(state) and we remove the Na values.
 combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
   mutate(longitude = as.numeric(longitude))%>% 
   mutate(latitude = as.numeric(latitude))%>%
-summarize(mean(longitude), mean(latitude))
+summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
 ```
 
-    ## # A tibble: 2 x 3
-    ##   state        `mean(longitude)` `mean(latitude)`
-    ##   <chr>                    <dbl>            <dbl>
-    ## 1 North Dakota             -99.3             47.2
-    ## 2 Wisconsin                -89.1             43.7
+    ## # A tibble: 2 x 5
+    ##   state        `mean(longitude)` `mean(latitude)` `sd(longitude)` `sd(latitude)`
+    ##   <chr>                    <dbl>            <dbl>           <dbl>          <dbl>
+    ## 1 North Dakota             -99.3             47.2            2.39          0.554
+    ## 2 Wisconsin                -89.1             43.7            1.33          0.853
+
+## Plots
