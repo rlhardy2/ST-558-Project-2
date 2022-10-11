@@ -221,8 +221,8 @@ Some requirements for this section are listed below:
 We maybe interested in the percentage of brewpub (A beer-focused restaurant or restaurant/bar with a brewery on-premise) or bar (A bar. No brewery equipment on premise) breweries in Wisconsin and North Dakota as these two states were found to be the two states that consumed the most alcohol. click [Here](https://www.thecentersquare.com/wisconsin/this-is-where-wisconsin-ranks-among-the-drunkest-states-in-america/article_3ccd11a4-c261-563b-919a-e02a0254b6dd.html) for more information.
 
 ```{r}
-wisconsin <- listByState("Wisconsin")
-ndakota <- listByState("North Dakota")
+wisconsin <- listByState("Wisconsin", 50)
+ndakota <- listByState("North Dakota", 50)
 combined_tibble <- rbind(wisconsin, ndakota)%>%
 # we create a new helper variable "brewpub_or_bar_1_0" to display 1 if brewery type is either "brewpub or "bar". We delete this variable later on
   mutate(brewpub_or_bar_1_0=if_else((brewery_type == "brewpub"|brewery_type == "bar"), 1, 0))%>%
@@ -244,7 +244,7 @@ combined_tibble
 
 A "brewpub" according is defined as a beer-focused restaurant or restaurant/bar with a brewery on-premise and "bar" is defined as a bar with no brewery equipment on premise.
 
-From the tibble above we can see that 45 percentage of all the brewery in Wisconsin are either a brewpub or a bar and in North Dakota 20 percentage of all the brewery in Wisconsin are either a brewpub or a bar which could be a possibly explanation for the high consumption of alcohol in those states. 
+From the tibble above we can see that 38 percentage (length 50) of all the brewery in Wisconsin are either a brewpub or a bar and in North Dakota 34.6 percentage (length 50) of all the brewery in Wisconsin are either a brewpub or a bar which could be a possibly explanation for the high consumption of alcohol in those states. 
 
 
 
