@@ -34,7 +34,7 @@ Here we will write the functions for data retrieval.These functions will allow t
 
 ## Function Number One: listBreweries()
 
-The first function is a function that will return a list of user-specified length. Default length is 20 and maximum length is 50!
+The first function is a function that will return a list of breweries of user-specified length. Default length is 20 and maximum length is 50.
 
 ```{r}
 listBreweries <- function(length = 20) {
@@ -48,16 +48,38 @@ listBreweries <- function(length = 20) {
   outputAPI <- GET(fullURL)
   
   #Parse the API output to get a data frame.
-  parsedAPI <- fromJSON(rawToChar(myAPI$content))
+  finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
-  #Return the final tibble.
-  return(parsedAPI)
+  #Return the final data frame.
+  return(finalAPI)
 }
 ```
 
-## Function Number Two:
+## Function Number Two: listByState()
 
+The second function is a function that will return a list of breweries of user-specified length and state. Default length is 20 and default state is North Carolina (note: states should be lowercase and have an underscore if they are two or more words).
 
+```{r}
+listByState <- function(state = "north_carolina", length = 20) {
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL <- "https://api.openbrewerydb.org/"
+  endpoint1 <- "breweries?by_state="
+  endpoint2 <- "&per_page="
+  fullURL = paste0(baseURL, endpoint1, state, endpoint2, length)
+  
+  #Get the API output.
+  outputAPI <- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(finalAPI)
+}
+
+listByState()
+```
 
 # Data Retreival and Parsing
 
