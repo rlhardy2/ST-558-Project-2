@@ -8,7 +8,6 @@ date: "2022-10-10"
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
-
 # Introduction
 
 Our goal with this project is to create a vignette about contacting an API using functions we’ve created to query, parse, and return well-structured data. We’ll then use our functions to obtain data from the API and do some exploratory data analysis. 
@@ -21,9 +20,25 @@ To use the functions for interacting with the API, the following packages are us
 * `jsonlite`: API interaction
 * `knitr`: Displaying tables in a markdown-friendly way
 
+# Writing the Functions
+
+Here we will write the functions for data retrieval.
+
+
 # Data Retreival and Parsing
 
+Here we will use the functions from the previous section to get our data.
 
 
 # Exploratory Data Analysis
+
+
+
+
+
+
+
+
+
+
 
