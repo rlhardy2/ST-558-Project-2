@@ -678,6 +678,20 @@ table(n_dakota_only$brewery_type)</code></pre>
 ##   nano                2         0
 ##   planning            0         5
 ##   regional            0         4</code></pre>
+<p>Next we create some numerical summaries for the mean of the longitude
+and latitude of our two states of interest Wisconsin and North Dakota.
+It should be notes that the combine_tibble object is already
+group_by(state) and we remove the Na values.</p>
+<pre class="r"><code>combined_tibble%&gt;%filter(longitude != &quot;Na&quot;, latitude != &quot;Na&quot;)%&gt;%
+  mutate(longitude = as.numeric(longitude))%&gt;% 
+  mutate(latitude = as.numeric(latitude))%&gt;%
+summarize(mean(longitude), mean(latitude))</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   state        `mean(longitude)` `mean(latitude)`
+##   &lt;chr&gt;                    &lt;dbl&gt;            &lt;dbl&gt;
+## 1 North Dakota             -99.3             47.2
+## 2 Wisconsin                -89.1             43.7</code></pre>
+<pre class="r"><code>  #c&lt;-as.numeric(b$longitude)</code></pre>
 </div>
 </div>
 
