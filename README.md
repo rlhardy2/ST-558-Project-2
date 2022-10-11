@@ -29,6 +29,8 @@ Matthew Sookoo and Rachel Hardy
 -   <a href="#data-retreival-and-exploratory-analysis"
     id="toc-data-retreival-and-exploratory-analysis">Data Retreival and
     Exploratory Analysis</a>
+    -   <a href="#contingency-table" id="toc-contingency-table">contingency
+        table</a>
 
 # Introduction
 
@@ -299,23 +301,23 @@ combined_tibble <- rbind(wisconsin, ndakota)%>%
 combined_tibble
 ```
 
-    ## # A tibble: 76 × 18
-    ##    percent_b…¹ id    name  brewe…² street addre…³ addre…⁴ city  state count…⁵ posta…⁶ country
+    ## # A tibble: 76 x 18
+    ##    percent_b~1 id    name  brewe~2 street addre~3 addre~4 city  state count~5 posta~6 country
     ##          <dbl> <chr> <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>  
-    ##  1          38 1840… 1840… micro   342 E… NA      NA      Milw… Wisc… NA      53207-… United…
-    ##  2          38 3-sh… 3 Sh… micro   1837 … NA      NA      Sheb… Wisc… NA      53083-… United…
-    ##  3          38 608-… 608 … planni… <NA>   NA      NA      La C… Wisc… NA      54603   United…
-    ##  4          38 841-… 841 … brewpub 841 E… NA      NA      Whit… Wisc… NA      53190-… United…
-    ##  5          38 8th-… 8th … brewpub 1132 … NA      NA      Sheb… Wisc… NA      53081-… United…
-    ##  6          38 agon… Agon… planni… <NA>   NA      NA      Rice… Wisc… NA      54868-… United…
-    ##  7          38 ahna… Ahna… micro   N9153… NA      NA      Algo… Wisc… NA      54201-… United…
-    ##  8          38 ale-… Ale … region… 2002 … NA      NA      Madi… Wisc… NA      53704-… United…
-    ##  9          38 alt-… ALT … brewpub 1808 … NA      NA      Madi… Wisc… NA      53704-… United…
-    ## 10          38 angr… Angr… brewpub 10440… NA      NA      Hayw… Wisc… NA      54843-… United…
-    ## # … with 66 more rows, 6 more variables: longitude <chr>, latitude <chr>, phone <chr>,
+    ##  1          38 1840~ 1840~ micro   342 E~ NA      NA      Milw~ Wisc~ NA      53207-~ United~
+    ##  2          38 3-sh~ 3 Sh~ micro   1837 ~ NA      NA      Sheb~ Wisc~ NA      53083-~ United~
+    ##  3          38 608-~ 608 ~ planni~ <NA>   NA      NA      La C~ Wisc~ NA      54603   United~
+    ##  4          38 841-~ 841 ~ brewpub 841 E~ NA      NA      Whit~ Wisc~ NA      53190-~ United~
+    ##  5          38 8th-~ 8th ~ brewpub 1132 ~ NA      NA      Sheb~ Wisc~ NA      53081-~ United~
+    ##  6          38 agon~ Agon~ planni~ <NA>   NA      NA      Rice~ Wisc~ NA      54868-~ United~
+    ##  7          38 ahna~ Ahna~ micro   N9153~ NA      NA      Algo~ Wisc~ NA      54201-~ United~
+    ##  8          38 ale-~ Ale ~ region~ 2002 ~ NA      NA      Madi~ Wisc~ NA      53704-~ United~
+    ##  9          38 alt-~ ALT ~ brewpub 1808 ~ NA      NA      Madi~ Wisc~ NA      53704-~ United~
+    ## 10          38 angr~ Angr~ brewpub 10440~ NA      NA      Hayw~ Wisc~ NA      54843-~ United~
+    ## # ... with 66 more rows, 6 more variables: longitude <chr>, latitude <chr>, phone <chr>,
     ## #   website_url <chr>, updated_at <chr>, created_at <chr>, and abbreviated variable names
-    ## #   ¹​percent_brewpub_bar, ²​brewery_type, ³​address_2, ⁴​address_3, ⁵​county_province,
-    ## #   ⁶​postal_code
+    ## #   1: percent_brewpub_bar, 2: brewery_type, 3: address_2, 4: address_3, 5: county_province,
+    ## #   6: postal_code
 
 A “brewpub” according is defined as a beer-focused restaurant or
 restaurant/bar with a brewery on-premise and “bar” is defined as a bar
@@ -323,6 +325,47 @@ with no brewery equipment on premise.
 
 From the tibble above we can see that 38 percentage (length 50) of all
 the brewery in Wisconsin are either a brewpub or a bar and in North
-Dakota 34.6 percentage (length 50) of all the brewery in Wisconsin are
-either a brewpub or a bar which could be a possibly explanation for the
-high consumption of alcohol in those states.
+Dakota approximately 34.6 percentage (length 50) of all the brewery in
+Wisconsin are either a brewpub or a bar which could be a possibly
+explanation for the high consumption of alcohol in those states.
+
+## contingency table
+
+We are interested in the two states with the highest consumption of
+alcohol, namely Wisconsin and North Dakota. We show a contingency table
+for brewery type in Wisconsin, another contingency table for brewery
+type in North Dakota and finally a two-way contingency table for
+brewery_type for both states.
+
+``` r
+wisconsin_only<-combined_tibble %>% filter(state == "Wisconsin")
+table(wisconsin_only$brewery_type)
+```
+
+    ## 
+    ##  brewpub contract    micro planning regional 
+    ##       19        3       19        5        4
+
+``` r
+n_dakota_only<-combined_tibble %>% filter(state == "North Dakota")
+table(n_dakota_only$brewery_type)
+```
+
+    ## 
+    ##     bar brewpub  closed   micro    nano 
+    ##       1       8       3      12       2
+
+``` r
+table(combined_tibble$brewery_type, combined_tibble$state)
+```
+
+    ##           
+    ##            North Dakota Wisconsin
+    ##   bar                 1         0
+    ##   brewpub             8        19
+    ##   closed              3         0
+    ##   contract            0         3
+    ##   micro              12        19
+    ##   nano                2         0
+    ##   planning            0         5
+    ##   regional            0         4

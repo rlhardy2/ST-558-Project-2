@@ -647,9 +647,38 @@ restaurant/bar with a brewery on-premise and “bar” is defined as a bar
 with no brewery equipment on premise.</p>
 <p>From the tibble above we can see that 38 percentage (length 50) of
 all the brewery in Wisconsin are either a brewpub or a bar and in North
-Dakota 34.6 percentage (length 50) of all the brewery in Wisconsin are
-either a brewpub or a bar which could be a possibly explanation for the
-high consumption of alcohol in those states.</p>
+Dakota approximately 34.6 percentage (length 50) of all the brewery in
+Wisconsin are either a brewpub or a bar which could be a possibly
+explanation for the high consumption of alcohol in those states.</p>
+<div id="contingency-table" class="section level2">
+<h2>contingency table</h2>
+<p>We are interested in the two states with the highest consumption of
+alcohol, namely Wisconsin and North Dakota. We show a contingency table
+for brewery type in Wisconsin, another contingency table for brewery
+type in North Dakota and finally a two-way contingency table for
+brewery_type for both states.</p>
+<pre class="r"><code>wisconsin_only&lt;-combined_tibble %&gt;% filter(state == &quot;Wisconsin&quot;)
+table(wisconsin_only$brewery_type)</code></pre>
+<pre><code>## 
+##  brewpub contract    micro planning regional 
+##       19        3       19        5        4</code></pre>
+<pre class="r"><code>n_dakota_only&lt;-combined_tibble %&gt;% filter(state == &quot;North Dakota&quot;)
+table(n_dakota_only$brewery_type)</code></pre>
+<pre><code>## 
+##     bar brewpub  closed   micro    nano 
+##       1       8       3      12       2</code></pre>
+<pre class="r"><code>table(combined_tibble$brewery_type, combined_tibble$state)</code></pre>
+<pre><code>##           
+##            North Dakota Wisconsin
+##   bar                 1         0
+##   brewpub             8        19
+##   closed              3         0
+##   contract            0         3
+##   micro              12        19
+##   nano                2         0
+##   planning            0         5
+##   regional            0         4</code></pre>
+</div>
 </div>
 
 

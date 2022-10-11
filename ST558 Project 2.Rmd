@@ -244,7 +244,21 @@ combined_tibble
 
 A "brewpub" according is defined as a beer-focused restaurant or restaurant/bar with a brewery on-premise and "bar" is defined as a bar with no brewery equipment on premise.
 
-From the tibble above we can see that 38 percentage (length 50) of all the brewery in Wisconsin are either a brewpub or a bar and in North Dakota 34.6 percentage (length 50) of all the brewery in Wisconsin are either a brewpub or a bar which could be a possibly explanation for the high consumption of alcohol in those states. 
+From the tibble above we can see that 38 percentage (length 50) of all the brewery in Wisconsin are either a brewpub or a bar and in North Dakota approximately 34.6 percentage (length 50) of all the brewery in Wisconsin are either a brewpub or a bar which could be a possibly explanation for the high consumption of alcohol in those states. 
+
+## contingency table
+ 
+We are interested in the two states with the highest consumption of alcohol, namely Wisconsin and North Dakota. We show a contingency table for brewery type in Wisconsin, another contingency table for brewery type in North Dakota and finally a two-way contingency table for brewery_type for both states.
+ 
+```{r}
+wisconsin_only<-combined_tibble %>% filter(state == "Wisconsin")
+table(wisconsin_only$brewery_type)
+
+n_dakota_only<-combined_tibble %>% filter(state == "North Dakota")
+table(n_dakota_only$brewery_type)
+  
+table(combined_tibble$brewery_type, combined_tibble$state)
+```
 
 
 
