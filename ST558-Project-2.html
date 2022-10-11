@@ -13,7 +13,7 @@
 
 <meta name="date" content="2022-10-10" />
 
-<title>ST558 Project 2</title>
+<title>ST 558 Project 2</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -363,7 +363,7 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">ST558 Project 2</h1>
+<h1 class="title toc-ignore">ST 558 Project 2</h1>
 <h4 class="author">Matthew Sookoo and Rachel Hardy</h4>
 <h4 class="date">2022-10-10</h4>
 
@@ -373,18 +373,231 @@ pre code {
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>Our goal with this project is to create a vignette about contacting
-an API using functions you’ve created to query, parse, and return
-well-structured data. You’ll then use your functions to obtain data from
-the API and do some exploratory data analysis.</p>
+an API using functions we’ve created to query, parse, and return
+well-structured data. We’ll then use our functions to obtain data from
+the API and do some exploratory data analysis!</p>
 </div>
 <div id="required-packages" class="section level1">
 <h1>Required packages</h1>
+<p>To use the functions for interacting with the API, the following
+packages are used:</p>
+<ul>
+<li><code>tidyverse</code>: Tons of useful features for data
+manipulation and visualization!</li>
+<li><code>jsonlite</code>: Used for API interaction.</li>
+<li><code>httr</code>: Used to make http requests in R language as it
+provides a wrapper for the curl package.</li>
+<li><code>knitr</code>: Used for displaying tables in a
+markdown-friendly way.</li>
+</ul>
 </div>
-<div id="data-retreival-and-parsing" class="section level1">
-<h1>Data Retreival and Parsing</h1>
+<div id="writing-the-functions" class="section level1">
+<h1>Writing the Functions</h1>
+<p>In this section we will write the functions for data retrieval. These
+functions will allow the user to customize their query to return
+specific data. We will be using an API that is focused on breweries.
+Each function will return a data frame with variables such as brewery
+ID, name, type, address (street, city, and state variables), postal
+code, country, longitude, latitude, phone number, and website URL to
+name a few. Each function will have a brief description.</p>
+<div id="function-number-one-listbreweries" class="section level2">
+<h2>Function Number One: listBreweries()</h2>
+<p>The first function is a function that will return a list of breweries
+of user-specified length. Default length is 20 and maximum length is
+50.</p>
+<pre class="r"><code>listBreweries &lt;- function(length = 20) {
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL &lt;- &quot;https://api.openbrewerydb.org/&quot;
+  endpoint &lt;- &quot;breweries?per_page=&quot;
+  fullURL = paste0(baseURL, endpoint, length)
+  
+  #Get the API output.
+  outputAPI &lt;- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI &lt;- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(as.tibble(finalAPI))
+}</code></pre>
 </div>
-<div id="exploratory-data-analysis" class="section level1">
-<h1>Exploratory Data Analysis</h1>
+<div id="function-number-two-listbystate" class="section level2">
+<h2>Function Number Two: listByState()</h2>
+<p>The second function is a function that will return a list of
+breweries of user-specified length and state. Default length is 20 and
+default state is North Carolina.</p>
+<pre class="r"><code>listByState &lt;- function(state = &quot;North Carolina&quot;, length = 20) {
+  
+  #Make sure state is all lowercase with underscores instead of spaces.
+  state &lt;- tolower(state)
+  state &lt;- sub(&quot; &quot;, &quot;_&quot;, state)
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL &lt;- &quot;https://api.openbrewerydb.org/&quot;
+  endpoint1 &lt;- &quot;breweries?by_state=&quot;
+  endpoint2 &lt;- &quot;&amp;per_page=&quot;
+  fullURL = paste0(baseURL, endpoint1, state, endpoint2, length)
+  
+  #Get the API output.
+  outputAPI &lt;- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI &lt;- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(as.tibble(finalAPI))
+}</code></pre>
+</div>
+<div id="function-number-three-listbycity" class="section level2">
+<h2>Function Number Three: listByCity()</h2>
+<p>The third function is a function that will return a list of breweries
+of user-specified length and city. Default length is 20 and default city
+is San Diego, California.</p>
+<pre class="r"><code>listByCity &lt;- function(city = &quot;San Diego&quot;, length = 20) {
+  
+  #Make sure city is all lowercase with underscores instead of spaces.
+  city &lt;- tolower(city)
+  city &lt;- sub(&quot; &quot;, &quot;_&quot;, city)
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL &lt;- &quot;https://api.openbrewerydb.org/&quot;
+  endpoint1 &lt;- &quot;breweries?by_city=&quot;
+  endpoint2 &lt;- &quot;&amp;per_page=&quot;
+  fullURL = paste0(baseURL, endpoint1, city, endpoint2, length)
+  
+  #Get the API output.
+  outputAPI &lt;- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI &lt;- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(as.tibble(finalAPI))
+}</code></pre>
+</div>
+<div id="function-number-four-listbydistance" class="section level2">
+<h2>Function Number Four: listByDistance()</h2>
+<p>The fourth function is a function that will return a list of
+breweries of user-specified length and sort the results by distance from
+a user-specified origin point (latitude, longitude). Default length is
+20 and default origin point is Raleigh, North Carolina (35.7796,
+-78.6382).</p>
+<pre class="r"><code>listByDistance &lt;- function(lat = 35.7796, long = -78.6382, length = 20) {
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL &lt;- &quot;https://api.openbrewerydb.org/&quot;
+  endpoint1 &lt;- &quot;breweries?by_dist=&quot;
+  endpoint2 &lt;- &quot;&amp;per_page=&quot;
+  fullURL = paste0(baseURL, endpoint1, lat, &quot;,&quot;, long, endpoint2, length)
+  
+  #Get the API output.
+  outputAPI &lt;- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI &lt;- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(as.tibble(finalAPI))
+}</code></pre>
+</div>
+<div id="function-number-five-listbytype" class="section level2">
+<h2>Function Number Five: listByType()</h2>
+<p>The fifth function is a function that will return a list of breweries
+of user-specified length and type. Default length is 20 and default type
+is micro.</p>
+<p>The different types of breweries are listed below:</p>
+<ul>
+<li><code>micro</code>: Most craft breweries. For example, Samuel Adams
+is still considered a micro brewery.</li>
+<li><code>nano</code>: An extremely small brewery which typically only
+distributes locally.</li>
+<li><code>regional</code>: A regional location of an expanded brewery.
+Ex. Sierra Nevada’s Asheville, NC location.</li>
+<li><code>brewpub</code>: A beer-focused restaurant or restaurant/bar
+with a brewery on-premise.</li>
+<li><code>large</code>: A very large brewery. Likely not for visitors.
+Ex. Miller-Coors. (deprecated)</li>
+<li><code>planning</code>: A brewery in planning or not yet opened to
+the public.</li>
+<li><code>bar</code>: A bar. No brewery equipment on premise.
+(deprecated)</li>
+<li><code>contract</code>: A brewery that uses another brewery’s
+equipment.</li>
+<li><code>proprietor</code>: Similar to contract brewing but refers more
+to a brewery incubator.</li>
+<li><code>closed</code>: A location which has been closed.</li>
+</ul>
+<pre class="r"><code>listByType &lt;- function(type = &quot;micro&quot;, length = 20) {
+  
+  #Make sure type is all lowercase.
+  type &lt;- tolower(type)
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL &lt;- &quot;https://api.openbrewerydb.org/&quot;
+  endpoint1 &lt;- &quot;breweries?by_type=&quot;
+  endpoint2 &lt;- &quot;&amp;per_page=&quot;
+  fullURL = paste0(baseURL, endpoint1, type, endpoint2, length)
+  
+  #Get the API output.
+  outputAPI &lt;- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI &lt;- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(as.tibble(finalAPI))
+}</code></pre>
+</div>
+<div id="function-number-six-listbysearch" class="section level2">
+<h2>Function Number Six: listBySearch()</h2>
+<p>The sixth function is a function that will return a list of breweries
+of user-specified length based on a search term. Default length is 20
+and the user <em>must</em> specify a search term.</p>
+<pre class="r"><code>listBySearch &lt;- function(search, length = 20) {
+  
+  #Make sure the search term is all lowercase with underscores instead of spaces.
+  search &lt;- tolower(search)
+  search &lt;- sub(&quot; &quot;, &quot;_&quot;, search)
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL &lt;- &quot;https://api.openbrewerydb.org/&quot;
+  endpoint1 &lt;- &quot;breweries/search?query=&quot;
+  endpoint2 &lt;- &quot;&amp;per_page=&quot;
+  fullURL = paste0(baseURL, endpoint1, search, endpoint2, length)
+  
+  #Get the API output.
+  outputAPI &lt;- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI &lt;- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(as.tibble(finalAPI))
+}</code></pre>
+</div>
+</div>
+<div id="data-retreival-and-exploratory-analysis" class="section level1">
+<h1>Data Retreival and Exploratory Analysis</h1>
+<p>In this section we will use the functions from the previous section
+to extract our data and then we will analyze it using the
+<code>tidyverse</code> package!</p>
+<p>Some requirements for this section are listed below:</p>
+<ul>
+<li>You should pull data from at least two calls to your obtaining data
+function (possibly combining them into one).</li>
+<li>You should create at least one new variable that is a function of
+other variables.</li>
+<li>You should create some contingency tables.</li>
+<li>You should create numerical summaries for some quantitative
+variables at each setting of some of your categorical variables.</li>
+<li>You should create at least five plots utilizing coloring, grouping,
+etc. All plots should have nice labels and titles.
+<ul>
+<li>You should have at least one bar plot, one histogram, one box plot,
+and one scatter plot.</li>
+</ul></li>
+</ul>
 </div>
 
 

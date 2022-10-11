@@ -79,7 +79,7 @@ listBreweries <- function(length = 20) {
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
   #Return the final data frame.
-  return(finalAPI)
+  return(as.tibble(finalAPI))
 }
 ```
 
@@ -109,7 +109,7 @@ listByState <- function(state = "North Carolina", length = 20) {
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
   #Return the final data frame.
-  return(finalAPI)
+  return(as.tibble(finalAPI))
 }
 ```
 
@@ -139,7 +139,7 @@ listByCity <- function(city = "San Diego", length = 20) {
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
   #Return the final data frame.
-  return(finalAPI)
+  return(as.tibble(finalAPI))
 }
 ```
 
@@ -166,7 +166,7 @@ listByDistance <- function(lat = 35.7796, long = -78.6382, length = 20) {
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
   #Return the final data frame.
-  return(finalAPI)
+  return(as.tibble(finalAPI))
 }
 ```
 
@@ -214,7 +214,7 @@ listByType <- function(type = "micro", length = 20) {
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
   #Return the final data frame.
-  return(finalAPI)
+  return(as.tibble(finalAPI))
 }
 ```
 
@@ -244,7 +244,7 @@ listBySearch <- function(search, length = 20) {
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
   #Return the final data frame.
-  return(finalAPI)
+  return(as.tibble(finalAPI))
 }
 ```
 
