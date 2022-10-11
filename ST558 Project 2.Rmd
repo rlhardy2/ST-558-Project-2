@@ -267,8 +267,6 @@ combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
   mutate(longitude = as.numeric(longitude))%>% 
   mutate(latitude = as.numeric(latitude))%>%
 summarize(mean(longitude), mean(latitude))
-
-  #c<-as.numeric(b$longitude)
   
 ```
 

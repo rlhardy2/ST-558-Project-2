@@ -387,7 +387,3 @@ summarize(mean(longitude), mean(latitude))
     ##   <chr>                    <dbl>            <dbl>
     ## 1 North Dakota             -99.3             47.2
     ## 2 Wisconsin                -89.1             43.7
-
-``` r
-  #c<-as.numeric(b$longitude)
-```
