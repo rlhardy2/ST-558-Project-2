@@ -4,13 +4,13 @@ author: "Matthew Sookoo and Rachel Hardy"
 date: "2022-10-10"
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
 # Introduction
 
-Our goal with this project is to create a vignette about contacting an API using functions we’ve created to query, parse, and return well-structured data. We’ll then use our functions to obtain data from the API and do some exploratory data analysis. 
+Our goal with this project is to create a vignette about contacting an API using functions we’ve created to query, parse, and return well-structured data. We’ll then use our functions to obtain data from the API and do some exploratory data analysis!
 
 # Required packages
 
@@ -21,7 +21,7 @@ To use the functions for interacting with the API, the following packages are us
 * `httr`: Used to make http requests in R language as it provides a wrapper for the curl package
 * `knitr`: Displaying tables in a markdown-friendly way
 
-```{r}
+```{r libraries, include = FALSE}
 library(tidyverse)
 library(jsonlite)
 library(httr)
@@ -30,7 +30,7 @@ library(knitr)
 
 # Writing the Functions
 
-Here we will write the functions for data retrieval.These functions will allow the user to customize their query to return specific data. We will be using an API that is focused on breweries in the United States. Each function will return a data frame with variables such as brewery ID, name, type, address (street, city, and state variables), postal code, country, longitude, latitude, phone number, and website URL to name a few. Each function will have a brief description.
+Here we will write the functions for data retrieval.These functions will allow the user to customize their query to return specific data. We will be using an API that is focused on breweries. Each function will return a data frame with variables such as brewery ID, name, type, address (street, city, and state variables), postal code, country, longitude, latitude, phone number, and website URL to name a few. Each function will have a brief description.
 
 ## Function Number One: listBreweries()
 
@@ -57,10 +57,14 @@ listBreweries <- function(length = 20) {
 
 ## Function Number Two: listByState()
 
-The second function is a function that will return a list of breweries of user-specified length and state. Default length is 20 and default state is North Carolina (note: states should be lowercase and have an underscore if they are two or more words).
+The second function is a function that will return a list of breweries of user-specified length and state. Default length is 20 and default state is North Carolina.
 
 ```{r}
 listByState <- function(state = "north_carolina", length = 20) {
+  
+  #Make sure state is all lowercase with underscorse instead of spaces.
+  state <- tolower(state)
+  state <- sub(" ", "_", state)
   
   #Create the full URL that will be used to retrieve the data.
   baseURL <- "https://api.openbrewerydb.org/"
@@ -77,8 +81,38 @@ listByState <- function(state = "north_carolina", length = 20) {
   #Return the final data frame.
   return(finalAPI)
 }
+```
 
-listByState()
+## Function Number Three: listByDistance()
+
+The third function is a function that will return a list of breweries of user-specified length and sort the results by distance from a user-specified origin point (latitude, longitude). Default length is 20 and default origin point is Raleigh, North Carolina (35.7796, -78.6382).
+
+```{r}
+listByDistance <- function(lat = 35.7796, long = -78.6382, length = 20) {
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL <- "https://api.openbrewerydb.org/"
+  endpoint1 <- "breweries?by_dist="
+  endpoint2 <- "&per_page="
+  fullURL = paste0(baseURL, endpoint1, lat, ",", long, endpoint2, length)
+  
+  #Get the API output.
+  outputAPI <- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(finalAPI)
+}
+```
+
+## Function Number Four:
+
+The fourth function is a function...
+
+```{r}
+
 ```
 
 # Data Retreival and Parsing
