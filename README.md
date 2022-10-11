@@ -23,8 +23,9 @@ Matthew Sookoo and Rachel Hardy
     -   <a href="#function-number-five-listbytype"
         id="toc-function-number-five-listbytype">Function Number Five:
         listByType()</a>
-    -   <a href="#function-number-six" id="toc-function-number-six">Function
-        Number Six:</a>
+    -   <a href="#function-number-six-listbysearch"
+        id="toc-function-number-six-listbysearch">Function Number Six:
+        listBySearch()</a>
 -   <a href="#data-retreival-and-parsing"
     id="toc-data-retreival-and-parsing">Data Retreival and Parsing</a>
 -   <a href="#exploratory-data-analysis"
@@ -218,9 +219,35 @@ listByType <- function(type = "micro", length = 20) {
 }
 ```
 
-## Function Number Six:
+## Function Number Six: listBySearch()
 
-The sixth function is a function that… (search)
+The sixth function is a function that will return a list of breweries of
+user-specified length based on a search term. Default length is 20 and
+the user *must* specify a search term.
+
+``` r
+listBySearch <- function(search, length = 20) {
+  
+  #Make sure the search term is all lowercase with underscores instead of spaces.
+  search <- tolower(search)
+  search <- sub(" ", "_", search)
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL <- "https://api.openbrewerydb.org/"
+  endpoint1 <- "breweries/search?query="
+  endpoint2 <- "&per_page="
+  fullURL = paste0(baseURL, endpoint1, search, endpoint2, length)
+  
+  #Get the API output.
+  outputAPI <- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(finalAPI)
+}
+```
 
 # Data Retreival and Parsing
 
@@ -228,3 +255,5 @@ Here we will use the functions from the previous section to get our
 data.
 
 # Exploratory Data Analysis
+
+Here we will do our exploratory data analysis (EDA).
