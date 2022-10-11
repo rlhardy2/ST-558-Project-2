@@ -251,7 +251,7 @@ listBySearch <- function(search, length = 20) {
 # Data Retreival and Exploratory Analysis
 
 In this section we will use the functions from the previous section to
-extract our data and then we will analyze it using the *tidyverse*
+extract our data and then we will analyze it using the `tidyverse`
 package!
 
 Some requirements for this section are listed below:
