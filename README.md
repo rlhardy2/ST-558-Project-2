@@ -26,10 +26,9 @@ Matthew Sookoo and Rachel Hardy
     -   <a href="#function-number-six-listbysearch"
         id="toc-function-number-six-listbysearch">Function Number Six:
         listBySearch()</a>
--   <a href="#data-retreival-and-parsing"
-    id="toc-data-retreival-and-parsing">Data Retreival and Parsing</a>
--   <a href="#exploratory-data-analysis"
-    id="toc-exploratory-data-analysis">Exploratory Data Analysis</a>
+-   <a href="#data-retreival-and-exploratory-analysis"
+    id="toc-data-retreival-and-exploratory-analysis">Data Retreival and
+    Exploratory Analysis</a>
 
 # Introduction
 
@@ -52,13 +51,13 @@ packages are used:
 
 # Writing the Functions
 
-Here we will write the functions for data retrieval. These functions
-will allow the user to customize their query to return specific data. We
-will be using an API that is focused on breweries. Each function will
-return a data frame with variables such as brewery ID, name, type,
-address (street, city, and state variables), postal code, country,
-longitude, latitude, phone number, and website URL to name a few. Each
-function will have a brief description.
+In this section we will write the functions for data retrieval. These
+functions will allow the user to customize their query to return
+specific data. We will be using an API that is focused on breweries.
+Each function will return a data frame with variables such as brewery
+ID, name, type, address (street, city, and state variables), postal
+code, country, longitude, latitude, phone number, and website URL to
+name a few. Each function will have a brief description.
 
 ## Function Number One: listBreweries()
 
@@ -249,11 +248,22 @@ listBySearch <- function(search, length = 20) {
 }
 ```
 
-# Data Retreival and Parsing
+# Data Retreival and Exploratory Analysis
 
-Here we will use the functions from the previous section to get our
-data.
+In this section we will use the functions from the previous section to
+extract our data and then we will analyze it using the *tidyverse*
+package!
 
-# Exploratory Data Analysis
+Some requirements for this section are listed below:
 
-Here we will do our exploratory data analysis (EDA).
+-   You should pull data from at least two calls to your obtaining data
+    function (possibly combining them into one).
+-   You should create at least one new variable that is a function of
+    other variables.
+-   You should create some contingency tables.
+-   You should create numerical summaries for some quantitative
+    variables at each setting of some of your categorical variables.
+-   You should create at least five plots utilizing coloring, grouping,
+    etc. All plots should have nice labels and titles.
+    -   You should have at least one bar plot, one histogram, one box
+        plot, and one scatter plot.
