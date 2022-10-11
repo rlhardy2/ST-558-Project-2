@@ -645,10 +645,10 @@ combined_tibble</code></pre>
 <p>A “brewpub” according is defined as a beer-focused restaurant or
 restaurant/bar with a brewery on-premise and “bar” is defined as a bar
 with no brewery equipment on premise.</p>
-<p>From the tibble above we can see that 38 percentage (length 50) of
-all the brewery in Wisconsin are either a brewpub or a bar and in North
-Dakota approximately 34.6 percentage (length 50) of all the brewery in
-Wisconsin are either a brewpub or a bar which could be a possibly
+<p>From the tibble above we can see that 38 percent (length 50) of all
+the breweries in Wisconsin are either a brewpub or a bar and in North
+Dakota approximately 34.6 percent (length 50) of all the breweries in
+Wisconsin are either a brewpub or a bar. This could be a possibly
 explanation for the high consumption of alcohol in those states.</p>
 <div id="contingency-table" class="section level2">
 <h2>contingency table</h2>
@@ -678,10 +678,11 @@ table(n_dakota_only$brewery_type)</code></pre>
 ##   nano                2         0
 ##   planning            0         5
 ##   regional            0         4</code></pre>
-<p>Next we create some numerical summaries for the mean of the longitude
-and latitude of our two states of interest Wisconsin and North Dakota.
-It should be noted that the combine_tibble object is already
-group_by(state) and we remove the Na values.</p>
+<p>Next we create some numerical summaries for the mean and standard
+deviations of the longitude and latitude values across our two states of
+interest Wisconsin and North Dakota. It should be noted that the
+combine_tibble object is already group_by(state) and we remove the Na
+values.</p>
 <pre class="r"><code>combined_tibble%&gt;%filter(longitude != &quot;Na&quot;, latitude != &quot;Na&quot;)%&gt;%
   mutate(longitude = as.numeric(longitude))%&gt;% 
   mutate(latitude = as.numeric(latitude))%&gt;%

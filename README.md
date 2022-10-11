@@ -324,11 +324,11 @@ A “brewpub” according is defined as a beer-focused restaurant or
 restaurant/bar with a brewery on-premise and “bar” is defined as a bar
 with no brewery equipment on premise.
 
-From the tibble above we can see that 38 percentage (length 50) of all
-the brewery in Wisconsin are either a brewpub or a bar and in North
-Dakota approximately 34.6 percentage (length 50) of all the brewery in
-Wisconsin are either a brewpub or a bar which could be a possibly
-explanation for the high consumption of alcohol in those states.
+From the tibble above we can see that 38 percent (length 50) of all the
+breweries in Wisconsin are either a brewpub or a bar and in North Dakota
+approximately 34.6 percent (length 50) of all the breweries in Wisconsin
+are either a brewpub or a bar. This could be a possibly explanation for
+the high consumption of alcohol in those states.
 
 ## contingency table
 
@@ -371,10 +371,11 @@ table(combined_tibble$brewery_type, combined_tibble$state)
     ##   planning            0         5
     ##   regional            0         4
 
-Next we create some numerical summaries for the mean of the longitude
-and latitude of our two states of interest Wisconsin and North Dakota.
-It should be noted that the combine_tibble object is already
-group_by(state) and we remove the Na values.
+Next we create some numerical summaries for the mean and standard
+deviations of the longitude and latitude values across our two states of
+interest Wisconsin and North Dakota. It should be noted that the
+combine_tibble object is already group_by(state) and we remove the Na
+values.
 
 ``` r
 combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
