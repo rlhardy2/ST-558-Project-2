@@ -14,12 +14,17 @@ Matthew Sookoo and Rachel Hardy
     -   <a href="#function-number-two-listbystate"
         id="toc-function-number-two-listbystate">Function Number Two:
         listByState()</a>
-    -   <a href="#function-number-three-listbydistance"
-        id="toc-function-number-three-listbydistance">Function Number Three:
+    -   <a href="#function-number-three-listbycity"
+        id="toc-function-number-three-listbycity">Function Number Three:
+        listByCity()</a>
+    -   <a href="#function-number-four-listbydistance"
+        id="toc-function-number-four-listbydistance">Function Number Four:
         listByDistance()</a>
-    -   <a href="#function-number-four-listbytype"
-        id="toc-function-number-four-listbytype">Function Number Four:
+    -   <a href="#function-number-five-listbytype"
+        id="toc-function-number-five-listbytype">Function Number Five:
         listByType()</a>
+    -   <a href="#function-number-six" id="toc-function-number-six">Function
+        Number Six:</a>
 -   <a href="#data-retreival-and-parsing"
     id="toc-data-retreival-and-parsing">Data Retreival and Parsing</a>
 -   <a href="#exploratory-data-analysis"
@@ -85,7 +90,7 @@ of user-specified length and state. Default length is 20 and default
 state is North Carolina.
 
 ``` r
-listByState <- function(state = "north_carolina", length = 20) {
+listByState <- function(state = "North Carolina", length = 20) {
   
   #Make sure state is all lowercase with underscores instead of spaces.
   state <- tolower(state)
@@ -108,10 +113,40 @@ listByState <- function(state = "north_carolina", length = 20) {
 }
 ```
 
-## Function Number Three: listByDistance()
+## Function Number Three: listByCity()
 
 The third function is a function that will return a list of breweries of
-user-specified length and sort the results by distance from a
+user-specified length and city. Default length is 20 and default city is
+San Diego, California.
+
+``` r
+listByCity <- function(city = "San Diego", length = 20) {
+  
+  #Make sure city is all lowercase with underscores instead of spaces.
+  city <- tolower(city)
+  city <- sub(" ", "_", city)
+  
+  #Create the full URL that will be used to retrieve the data.
+  baseURL <- "https://api.openbrewerydb.org/"
+  endpoint1 <- "breweries?by_city="
+  endpoint2 <- "&per_page="
+  fullURL = paste0(baseURL, endpoint1, city, endpoint2, length)
+  
+  #Get the API output.
+  outputAPI <- GET(fullURL)
+  
+  #Parse the API output to get a data frame.
+  finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Return the final data frame.
+  return(finalAPI)
+}
+```
+
+## Function Number Four: listByDistance()
+
+The fourth function is a function that will return a list of breweries
+of user-specified length and sort the results by distance from a
 user-specified origin point (latitude, longitude). Default length is 20
 and default origin point is Raleigh, North Carolina (35.7796, -78.6382).
 
@@ -135,11 +170,11 @@ listByDistance <- function(lat = 35.7796, long = -78.6382, length = 20) {
 }
 ```
 
-## Function Number Four: listByType()
+## Function Number Five: listByType()
 
-The fourth function is a function that will return a list of breweries
-of user-specified length and type. Default length is 20 and default type
-is micro.
+The fifth function is a function that will return a list of breweries of
+user-specified length and type. Default length is 20 and default type is
+micro.
 
 The different types of breweries are listed below:
 
@@ -182,6 +217,10 @@ listByType <- function(type = "micro", length = 20) {
   return(finalAPI)
 }
 ```
+
+## Function Number Six:
+
+The sixth function is a function that… (search)
 
 # Data Retreival and Parsing
 
