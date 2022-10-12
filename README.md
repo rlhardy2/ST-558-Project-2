@@ -5,7 +5,7 @@ Matthew Sookoo and Rachel Hardy
 
 -   <a href="#introduction" id="toc-introduction">Introduction</a>
 -   <a href="#required-packages" id="toc-required-packages">Required
-    packages</a>
+    Packages</a>
 -   <a href="#writing-the-functions" id="toc-writing-the-functions">Writing
     the Functions</a>
     -   <a href="#function-number-one-listbreweries"
@@ -79,7 +79,7 @@ API using functions we’ve created to query, parse, and return
 well-structured data. We’ll then use our functions to obtain data from
 the API and do some exploratory data analysis!
 
-# Required packages
+# Required Packages
 
 To use the functions for interacting with the API, the following
 packages are used:
@@ -674,14 +674,14 @@ g1 + geom_histogram(color = "black", fill = "#FF6666") + labs(title = "Histogram
   labs(title = "Histogram of Latitude", x = "Latitude")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-98-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 ``` r
 g1 + geom_histogram(aes(y=..density..), colour="black", fill="white") + geom_density(alpha=.2, fill="#FF6666") + 
   labs(title = "Histogram of Latitude with Density", x = "Latitude")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-98-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->
 
 ### Bar Plots of Brewery Type: Wisconsin vs North Dakota
 
@@ -699,7 +699,7 @@ g2 + geom_bar(aes(fill = brewery_type)) + labs(title = "Brewery Types in Wiscons
   coord_flip()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-99-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
 The second bar plot is very similar to the previous one, except here we
 have grouped the brewery type data by our state variable!
@@ -712,7 +712,7 @@ g3 + geom_bar(aes(fill = state), position = "dodge") + labs(title = "Brewery Typ
   coord_flip()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-100-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 ### Scatter Plot of Longitude vs Latitude: 50 Random Breweries
 
@@ -730,7 +730,7 @@ g4 + geom_point(aes(color = brewery_type)) +
   labs(title = "Longitude vs Latitude: 50 Random Breweries", x = "Latitude", y = "Longitude") 
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-101-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
 ### Box Plots: Wisconsin vs North Dakota
 
@@ -751,7 +751,7 @@ g5 + geom_boxplot(aes(fill = state)) +
   scale_fill_discrete(name = "State")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-102-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
 The second graph isn’t extremely nice to look at, but it shows the
 benefits of using facet_wrap() or facet_grid() to view separate graphs
@@ -769,4 +769,4 @@ g6 + geom_boxplot(aes(fill = brewery_type)) + facet_wrap(~state, labeller = labe
   coord_flip()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-103-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
