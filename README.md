@@ -55,14 +55,22 @@ Matthew Sookoo and Rachel Hardy
         -   <a href="#brewery-types-wisconsin-vs-north-dakota"
             id="toc-brewery-types-wisconsin-vs-north-dakota">Brewery Types:
             Wisconsin vs North Dakota</a>
-        -   <a href="#brewery-types-random-tibble-of-50"
-            id="toc-brewery-types-random-tibble-of-50">Brewery Types: Random Tibble
-            of 50</a>
+        -   <a href="#brewery-types-50-random-breweries"
+            id="toc-brewery-types-50-random-breweries">Brewery Types: 50 Random
+            Breweries</a>
     -   <a href="#plots" id="toc-plots">Plots</a>
-        -   <a href="#histogram" id="toc-histogram">Histogram</a>
-        -   <a href="#bar-plot" id="toc-bar-plot">Bar Plot</a>
-        -   <a href="#scatter-plot" id="toc-scatter-plot">Scatter Plot</a>
-        -   <a href="#box-plot" id="toc-box-plot">Box Plot</a>
+        -   <a href="#histograms-of-latitude-50-random-breweries"
+            id="toc-histograms-of-latitude-50-random-breweries">Histograms of
+            Latitude: 50 Random Breweries</a>
+        -   <a href="#bar-plots-of-brewery-type-wisconsin-vs-north-dakota"
+            id="toc-bar-plots-of-brewery-type-wisconsin-vs-north-dakota">Bar Plots
+            of Brewery Type: Wisconsin vs North Dakota</a>
+        -   <a href="#scatter-plot-of-longitude-vs-latitude-50-random-breweries"
+            id="toc-scatter-plot-of-longitude-vs-latitude-50-random-breweries">Scatter
+            Plot of Longitude vs Latitude: 50 Random Breweries</a>
+        -   <a href="#box-plots-wisconsin-vs-north-dakota"
+            id="toc-box-plots-wisconsin-vs-north-dakota">Box Plots: Wisconsin vs
+            North Dakota</a>
 
 # Introduction
 
@@ -614,7 +622,7 @@ table(combined_tibble$brewery_type, combined_tibble$state, combined_tibble$brewp
     ##   planning            0         0
     ##   regional            0         0
 
-### Brewery Types: Random Tibble of 50
+### Brewery Types: 50 Random Breweries
 
 For this example, we will pull a tibble of 50 breweries using the
 listBreweries() function. We will first show a contingency table of
@@ -645,63 +653,120 @@ table(randomBreweries$brewery_type, randomBreweries$country)
 
 ## Plots
 
-### Histogram
+### Histograms of Latitude: 50 Random Breweries
 
-We can use a continuous valued variable such as latitude or longitude.
+In the histogram below, we will take our tibble of random breweries
+(length of 50), and create a histogram of the latitude variable. The
+first histogram shown is a standard histogram with an x=axis
+representing latitude and a y-axis representing count. The second
+histogram shown is similar to the first, except we are now viewing
+density instead of count.
 
-``` r
-combined_tibble2 <- combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
-  mutate(longitude = as.numeric(longitude))%>% 
-  mutate(latitude = as.numeric(latitude))
-
-ggplot(combined_tibble2, aes(x=latitude)) + geom_histogram(fill="green", col="orange")
-```
-
-![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
-
-### Bar Plot
-
-We use a categorical variable we use fill as an aesthetic rather than an
-attribute
+Since we are using a tibble of random breweries for this example, we can
+see that our latitude varies greatly, from as low as 30 to as high as
+55. The second histogram with the density added just shows us a nice
+smooth line in addition to the bars.
 
 ``` r
-ggplot(combined_tibble2, aes(x=brewery_type, fill=brewery_type)) + geom_bar()
+g1 <- ggplot(randomBreweries, aes(x = latitude))
+
+g1 + geom_histogram(color = "black", fill = "#FF6666") + labs(title = "Histogram of Latitude") +
+  labs(title = "Histogram of Latitude", x = "Latitude")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
-
-### Scatter Plot
-
-We use the scatter plot to understand the distribution between two
-numeric columns which we is our longitude and latitude columns. We
-investigate how do the longitude vary with latitude.
+![](README_files/figure-gfm/unnamed-chunk-98-1.png)<!-- -->
 
 ``` r
-ggplot(combined_tibble2, aes(y=longitude, x= latitude, col=brewery_type)) + geom_point()
+g1 + geom_histogram(aes(y=..density..), colour="black", fill="white") + geom_density(alpha=.2, fill="#FF6666") + 
+  labs(title = "Histogram of Latitude with Density", x = "Latitude")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-98-2.png)<!-- -->
 
-### Box Plot
+### Bar Plots of Brewery Type: Wisconsin vs North Dakota
 
-In a box plot we try to investigate how a numerical value change with a
-categorical value. We choose latitude for the numerical value and
-brewery type for the categorical variable.
+For this example, we will use our combined_tibble object that has
+brewery data from both Wisconsin and North Dakota. The first bar plot
+will be simply showing us the count of the different brewery types in
+the data, by grouping them we get a nice color scheme as opposed to one
+single color.
 
 ``` r
-ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=brewery_type )) + geom_boxplot()
+g2 <- ggplot(combined_tibble, aes(x = brewery_type))
+
+g2 + geom_bar(aes(fill = brewery_type)) + labs(title = "Brewery Types in Wisconsin and North Dakota", x = "Brewery Type") +
+  scale_fill_discrete(name = "Brewery Type") +
+  coord_flip()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-99-1.png)<!-- -->
+
+The second bar plot is very similar to the previous one, except here we
+have grouped the brewery type data by our state variable!
 
 ``` r
-ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot()
+g3 <- ggplot(combined_tibble, aes(x = brewery_type))
+
+g3 + geom_bar(aes(fill = state), position = "dodge") + labs(title = "Brewery Types in Wisconsin and North Dakota", x = "Brewery Type") +
+  scale_fill_discrete(name = "State") +
+  coord_flip()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-33-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-100-1.png)<!-- -->
+
+### Scatter Plot of Longitude vs Latitude: 50 Random Breweries
+
+We use the scatter plot to understand the relationship between two
+quantitative variables. For this example, we are using our data of 50
+random breweries and our two quantitative variables are longitude and
+latitude. If the two variables were linearly related, we would see a
+somewhat straight line. As seen below, there appears to be no
+relationship between longitude and latitude, which makes sense!
 
 ``` r
-ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot() + facet_grid(~state)
+g4 <- ggplot(randomBreweries, aes(y = longitude, x = latitude))
+
+g4 + geom_point(aes(color = brewery_type)) + 
+  labs(title = "Longitude vs Latitude: 50 Random Breweries", x = "Latitude", y = "Longitude") 
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-33-3.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-101-1.png)<!-- -->
+
+### Box Plots: Wisconsin vs North Dakota
+
+In this section, we will be creating box plots for our Wisconsin vs
+North Dakota data.
+
+For the first box plot we will look at the latitude variable for both
+North Dakota and Wisconsin, separately. Of course, this graph isn’t very
+meaningful mathematically, since the various latitudes within each
+respective state will have a very small range, which can be seen in the
+graph below.
+
+``` r
+g5 <- ggplot(combined_tibble, aes(x = state, y = latitude))
+
+g5 + geom_boxplot(aes(fill = state)) + 
+  labs(title = "Box Plot of Latitude: Wisconsin vs North Dakota", x = "State", y = "Latitude") +
+  scale_fill_discrete(name = "State")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-102-1.png)<!-- -->
+
+The second graph isn’t extremely nice to look at, but it shows the
+benefits of using facet_wrap() or facet_grid() to view separate graphs
+for each level of a categorical variable, in this case that variable is
+state. So in the left grid, we see latitude for each brewery type for
+only North Dakota, and in the right grid we see latitude for each
+brewery type for only Wisconsin.
+
+``` r
+g6 <- ggplot(combined_tibble, aes(x = brewery_type, y = latitude))
+
+g6 + geom_boxplot(aes(fill = brewery_type)) + facet_wrap(~state, labeller = label_both) + 
+  labs(title = "Box Plot of Latitude Grouped by Brewery Type: Wisconsin vs North Dakota", x = "Brewery Type", y = "Latitude") +
+  scale_fill_discrete(name = "Brewery Type") +
+  coord_flip()
+```
+
+![](README_files/figure-gfm/unnamed-chunk-103-1.png)<!-- -->
