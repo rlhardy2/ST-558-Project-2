@@ -50,6 +50,10 @@ listBreweries <- function(length = 20) {
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
+  
   #Return the final data frame.
   return(as_tibble(finalAPI))
 }
@@ -77,6 +81,10 @@ listByState <- function(state = "North Carolina", length = 20) {
   
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
   
   #Return the final data frame.
   return(as_tibble(finalAPI))
@@ -106,6 +114,10 @@ listByCity <- function(city = "San Diego", length = 20) {
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
+  
   #Return the final data frame.
   return(as_tibble(finalAPI))
 }
@@ -129,6 +141,10 @@ listByDistance <- function(lat = 35.7796, long = -78.6382, length = 20) {
   
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
   
   #Return the final data frame.
   return(as_tibble(finalAPI))
@@ -170,6 +186,10 @@ listByType <- function(type = "micro", length = 20) {
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
+  
   #Return the final data frame.
   return(as_tibble(finalAPI))
 }
@@ -197,6 +217,10 @@ listBySearch <- function(search, length = 20) {
   
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
   
   #Return the final data frame.
   return(as_tibble(finalAPI))
@@ -238,9 +262,9 @@ combined_tibble <- rbind(wisconsin, ndakota)%>%
 combined_tibble
 ```
 
-### DIstance from Madison, Wisconsin
+### Exploring Distance: Madison, Wisconsin
 
-Since Wisconsin beat North Dakota in the comparison above, let's see how many breweries are close to the capital of the state: Madison, Wisconsin. The latitude and longitude of Madison, Wisconsin is 43.0722 and -89.4008. The 50 breweries closest to Madison, Wisconsin can be seen in the tibble below.
+Since Wisconsin beat North Dakota in the comparison above, let's see how many breweries are close to the capital of the state: Madison, Wisconsin. The latitude and longitude of Madison, Wisconsin is 43.0722 and -89.4008, respectively. The 50 breweries closest to Madison, Wisconsin can be seen in the tibble below.
 
 ```{r}
 madison <- listByDistance(lat = 43.0722, long = -89.4008, length = 50)
@@ -251,7 +275,7 @@ madison
 
 From the tibble above, we can create a modified tibble showing us which breweries have a distance away from the origin point of both 0.05 longitude *AND* 0.05 latitude. If the "lat_and_long" variable equals 1, this is true, and if it equals 0, this is false.
 
-As seen in the modified tibble below, of the 50 breweries closest to Madison, Wisconsin, only 4 are both more than 0.05 longitude and 0.05 latitude away from the origin point.
+As seen in the modified tibble below, of the 50 breweries closest to Madison, Wisconsin, only 6 are both more than 0.05 longitude and 0.05 latitude away from the origin point.
 
 ```{r}
 #Create the modified tibble.
@@ -266,6 +290,35 @@ madison_modified <- madison %>%
 #Print the modified tibble.
 madison_modified
 ```
+
+### Summary of Latitude and Longitude: San Diego, California
+
+The latitude and longitude of San Diego, California is 32.7157 and -117.1611, respectively. We can create a tibble of breweries in San Diego and find some summary statistics for the latitude and longitude variables. Mathematically speaking, these numbers may not make a lot of sense, this is just for the sake of showing the process!
+
+```{r}
+san_diego <- listByCity(city = "San Diego", length = 50)
+
+#Print the tibble.
+san_diego
+```
+
+Now, we will use the summarize() function to find some summary statistics.
+
+```{r}
+#Creating the summary for longitude.
+long_summary <- san_diego %>% summarize(mean = mean(longitude), min = min(longitude), max = max(longitude))
+
+#Print the summary.
+long_summary
+
+#Creating the summary for latitude.
+lat_summary <- san_diego %>% summarize(mean = mean(latitude), min = min(latitude), max = max(latitude))
+
+#Print the summary.
+lat_summary
+```
+
+As seen above in our list of 50 breweries in San Diego, the average longitude is -117.1546 and the average latitude is 32.8133. The respective minimum values are -117.2511 and 32.69822. The respective maximum values are -117.0858 and 32.02391. As expected, latitude and longitude do not vary much within a single city.
 
 ## Contingency Tables
  

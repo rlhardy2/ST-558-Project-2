@@ -34,9 +34,12 @@ Matthew Sookoo and Rachel Hardy
         -   <a href="#brewpubs-and-bars-wisconsin-vs-north-dakota"
             id="toc-brewpubs-and-bars-wisconsin-vs-north-dakota">Brewpubs and Bars:
             Wisconsin vs North Dakota</a>
-        -   <a href="#distance-from-madison-wisconsin"
-            id="toc-distance-from-madison-wisconsin">DIstance from Madison,
-            Wisconsin</a>
+        -   <a href="#exploring-distance-madison-wisconsin"
+            id="toc-exploring-distance-madison-wisconsin">Exploring Distance:
+            Madison, Wisconsin</a>
+        -   <a href="#summary-of-latitude-and-longitude-san-diego-california"
+            id="toc-summary-of-latitude-and-longitude-san-diego-california">Summary
+            of Latitude and Longitude: San Diego, California</a>
     -   <a href="#contingency-tables" id="toc-contingency-tables">Contingency
         Tables</a>
     -   <a href="#plots" id="toc-plots">Plots</a>
@@ -93,6 +96,10 @@ listBreweries <- function(length = 20) {
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
+  
   #Return the final data frame.
   return(as_tibble(finalAPI))
 }
@@ -122,6 +129,10 @@ listByState <- function(state = "North Carolina", length = 20) {
   
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
   
   #Return the final data frame.
   return(as_tibble(finalAPI))
@@ -153,6 +164,10 @@ listByCity <- function(city = "San Diego", length = 20) {
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
+  
   #Return the final data frame.
   return(as_tibble(finalAPI))
 }
@@ -179,6 +194,10 @@ listByDistance <- function(lat = 35.7796, long = -78.6382, length = 20) {
   
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
   
   #Return the final data frame.
   return(as_tibble(finalAPI))
@@ -228,6 +247,10 @@ listByType <- function(type = "micro", length = 20) {
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
   
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
+  
   #Return the final data frame.
   return(as_tibble(finalAPI))
 }
@@ -257,6 +280,10 @@ listBySearch <- function(search, length = 20) {
   
   #Parse the API output to get a data frame.
   finalAPI <- fromJSON(rawToChar(outputAPI$content))
+  
+  #Make sure latitude and longitude are numeric.
+  finalAPI$longitude <- as.numeric(finalAPI$longitude)
+  finalAPI$latitude <- as.numeric(finalAPI$latitude)
   
   #Return the final data frame.
   return(as_tibble(finalAPI))
@@ -314,27 +341,27 @@ combined_tibble
 
     ## # A tibble: 76 × 19
     ##    brewpub_or_…¹ perce…² id    name  brewe…³ street addre…⁴ addre…⁵ city  state count…⁶ posta…⁷ country longi…⁸ latit…⁹ phone websi…˟ updat…˟
-    ##            <dbl>   <dbl> <chr> <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>   <chr>   <chr>   <chr> <chr>   <chr>  
-    ##  1             0      38 1840… 1840… micro   342 E… NA      NA      Milw… Wisc… NA      53207-… United… -87.90… 43.004… 4142… http:/… 2022-0…
-    ##  2             0      38 3-sh… 3 Sh… micro   1837 … NA      NA      Sheb… Wisc… NA      53083-… United… -87.73… 43.773… 9209… http:/… 2022-0…
-    ##  3             0      38 608-… 608 … planni… <NA>   NA      NA      La C… Wisc… NA      54603   United… <NA>    <NA>    <NA>  http:/… 2022-0…
-    ##  4             1      38 841-… 841 … brewpub 841 E… NA      NA      Whit… Wisc… NA      53190-… United… -88.71… 42.832… 2624… <NA>    2022-0…
-    ##  5             1      38 8th-… 8th … brewpub 1132 … NA      NA      Sheb… Wisc… NA      53081-… United… -87.71… 43.756… 9202… http:/… 2022-0…
-    ##  6             0      38 agon… Agon… planni… <NA>   NA      NA      Rice… Wisc… NA      54868-… United… <NA>    <NA>    7153… http:/… 2022-0…
-    ##  7             0      38 ahna… Ahna… micro   N9153… NA      NA      Algo… Wisc… NA      54201-… United… <NA>    <NA>    9202… http:/… 2022-0…
-    ##  8             0      38 ale-… Ale … region… 2002 … NA      NA      Madi… Wisc… NA      53704-… United… -89.35… 43.120… 6086… http:/… 2022-0…
-    ##  9             1      38 alt-… ALT … brewpub 1808 … NA      NA      Madi… Wisc… NA      53704-… United… -89.33… 43.125… 6083… http:/… 2022-0…
-    ## 10             1      38 angr… Angr… brewpub 10440… NA      NA      Hayw… Wisc… NA      54843-… United… -91.48… 46.010… 7159… http:/… 2022-0…
+    ##            <dbl>   <dbl> <chr> <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>     <dbl>   <dbl> <chr> <chr>   <chr>  
+    ##  1             0      38 1840… 1840… micro   342 E… NA      NA      Milw… Wisc… NA      53207-… United…   -87.9    43.0 4142… http:/… 2022-0…
+    ##  2             0      38 3-sh… 3 Sh… micro   1837 … NA      NA      Sheb… Wisc… NA      53083-… United…   -87.7    43.8 9209… http:/… 2022-0…
+    ##  3             0      38 608-… 608 … planni… <NA>   NA      NA      La C… Wisc… NA      54603   United…    NA      NA   <NA>  http:/… 2022-0…
+    ##  4             1      38 841-… 841 … brewpub 841 E… NA      NA      Whit… Wisc… NA      53190-… United…   -88.7    42.8 2624… <NA>    2022-0…
+    ##  5             1      38 8th-… 8th … brewpub 1132 … NA      NA      Sheb… Wisc… NA      53081-… United…   -87.7    43.8 9202… http:/… 2022-0…
+    ##  6             0      38 agon… Agon… planni… <NA>   NA      NA      Rice… Wisc… NA      54868-… United…    NA      NA   7153… http:/… 2022-0…
+    ##  7             0      38 ahna… Ahna… micro   N9153… NA      NA      Algo… Wisc… NA      54201-… United…    NA      NA   9202… http:/… 2022-0…
+    ##  8             0      38 ale-… Ale … region… 2002 … NA      NA      Madi… Wisc… NA      53704-… United…   -89.4    43.1 6086… http:/… 2022-0…
+    ##  9             1      38 alt-… ALT … brewpub 1808 … NA      NA      Madi… Wisc… NA      53704-… United…   -89.3    43.1 6083… http:/… 2022-0…
+    ## 10             1      38 angr… Angr… brewpub 10440… NA      NA      Hayw… Wisc… NA      54843-… United…   -91.5    46.0 7159… http:/… 2022-0…
     ## # … with 66 more rows, 1 more variable: created_at <chr>, and abbreviated variable names ¹​brewpub_or_bar_1_0, ²​percent_brewpub_bar,
     ## #   ³​brewery_type, ⁴​address_2, ⁵​address_3, ⁶​county_province, ⁷​postal_code, ⁸​longitude, ⁹​latitude, ˟​website_url, ˟​updated_at
 
-### DIstance from Madison, Wisconsin
+### Exploring Distance: Madison, Wisconsin
 
 Since Wisconsin beat North Dakota in the comparison above, let’s see how
 many breweries are close to the capital of the state: Madison,
 Wisconsin. The latitude and longitude of Madison, Wisconsin is 43.0722
-and -89.4008. The 50 breweries closest to Madison, Wisconsin can be seen
-in the tibble below.
+and -89.4008, respectively. The 50 breweries closest to Madison,
+Wisconsin can be seen in the tibble below.
 
 ``` r
 madison <- listByDistance(lat = 43.0722, long = -89.4008, length = 50)
@@ -345,17 +372,17 @@ madison
 
     ## # A tibble: 50 × 17
     ##    id                  name  brewe…¹ street addre…² addre…³ city  state count…⁴ posta…⁵ country longi…⁶ latit…⁷ phone websi…⁸ updat…⁹ creat…˟
-    ##    <chr>               <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>   <chr>   <chr>   <chr> <chr>   <chr>   <chr>  
-    ##  1 luckys-1313-brewpu… Luck… brewpub 1313 … NA      NA      Madi… Wisc… NA      53715-… United… -89.40… 43.067… 6082… http:/… 2022-0… 2022-0…
-    ##  2 rockhound-brewing-… Rock… brewpub 444 S… NA      NA      Madi… Wisc… NA      53715-… United… -89.40… 43.062… 6082… http:/… 2022-0… 2022-0…
-    ##  3 funk-factory-geuze… Funk… micro   1602 … NA      NA      Madi… Wisc… NA      53715-… United… -89.39… 43.050… <NA>  http:/… 2022-0… 2022-0…
-    ##  4 working-draft-beer… Work… micro   1129 … NA      NA      Madi… Wisc… NA      53703-… United… -89.36… 43.083… <NA>  http:/… 2022-0… 2022-0…
-    ##  5 great-dane-pub-and… Grea… brewpub 357 P… NA      NA      Madi… Wisc… NA      53705-… United… -89.45… 43.070… 6086… http:/… 2022-0… 2022-0…
-    ##  6 one-barrel-brewing… One … micro   2001 … NA      NA      Madi… Wisc… NA      53704-… United… -89.35… 43.091… 6086… http:/… 2022-0… 2022-0…
-    ##  7 next-door-brewing-… Next… brewpub 2439 … NA      NA      Madi… Wisc… NA      53704-… United… -89.34… 43.093… 6087… http:/… 2022-0… 2022-0…
-    ##  8 vintage-brewing-co… Vint… brewpub 674 S… NA      NA      Madi… Wisc… NA      53711-… United… -89.47… 43.051… 6082… http:/… 2022-0… 2022-0…
-    ##  9 great-dane-pub-and… Grea… brewpub 2980 … NA      NA      Fitc… Wisc… NA      53711-… United… -89.42… 43.018… 6084… http:/… 2022-0… 2022-0…
-    ## 10 ale-asylum-madison  Ale … region… 2002 … NA      NA      Madi… Wisc… NA      53704-… United… -89.35… 43.120… 6086… http:/… 2022-0… 2022-0…
+    ##    <chr>               <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>     <dbl>   <dbl> <chr> <chr>   <chr>   <chr>  
+    ##  1 luckys-1313-brewpu… Luck… brewpub 1313 … NA      NA      Madi… Wisc… NA      53715-… United…   -89.4    43.1 6082… http:/… 2022-0… 2022-0…
+    ##  2 rockhound-brewing-… Rock… brewpub 444 S… NA      NA      Madi… Wisc… NA      53715-… United…   -89.4    43.1 6082… http:/… 2022-0… 2022-0…
+    ##  3 funk-factory-geuze… Funk… micro   1602 … NA      NA      Madi… Wisc… NA      53715-… United…   -89.4    43.1 <NA>  http:/… 2022-0… 2022-0…
+    ##  4 working-draft-beer… Work… micro   1129 … NA      NA      Madi… Wisc… NA      53703-… United…   -89.4    43.1 <NA>  http:/… 2022-0… 2022-0…
+    ##  5 great-dane-pub-and… Grea… brewpub 357 P… NA      NA      Madi… Wisc… NA      53705-… United…   -89.5    43.1 6086… http:/… 2022-0… 2022-0…
+    ##  6 one-barrel-brewing… One … micro   2001 … NA      NA      Madi… Wisc… NA      53704-… United…   -89.4    43.1 6086… http:/… 2022-0… 2022-0…
+    ##  7 next-door-brewing-… Next… brewpub 2439 … NA      NA      Madi… Wisc… NA      53704-… United…   -89.3    43.1 6087… http:/… 2022-0… 2022-0…
+    ##  8 vintage-brewing-co… Vint… brewpub 674 S… NA      NA      Madi… Wisc… NA      53711-… United…   -89.5    43.1 6082… http:/… 2022-0… 2022-0…
+    ##  9 great-dane-pub-and… Grea… brewpub 2980 … NA      NA      Fitc… Wisc… NA      53711-… United…   -89.4    43.0 6084… http:/… 2022-0… 2022-0…
+    ## 10 ale-asylum-madison  Ale … region… 2002 … NA      NA      Madi… Wisc… NA      53704-… United…   -89.4    43.1 6086… http:/… 2022-0… 2022-0…
     ## # … with 40 more rows, and abbreviated variable names ¹​brewery_type, ²​address_2, ³​address_3, ⁴​county_province, ⁵​postal_code, ⁶​longitude,
     ## #   ⁷​latitude, ⁸​website_url, ⁹​updated_at, ˟​created_at
 
@@ -365,7 +392,7 @@ longitude *AND* 0.05 latitude. If the “lat_and_long” variable equals 1,
 this is true, and if it equals 0, this is false.
 
 As seen in the modified tibble below, of the 50 breweries closest to
-Madison, Wisconsin, only 4 are both more than 0.05 longitude and 0.05
+Madison, Wisconsin, only 6 are both more than 0.05 longitude and 0.05
 latitude away from the origin point.
 
 ``` r
@@ -382,15 +409,83 @@ madison_modified <- madison %>%
 madison_modified
 ```
 
-    ## # A tibble: 4 × 18
+    ## # A tibble: 6 × 18
     ##   lat_and_long id      name  brewe…¹ street addre…² addre…³ city  state count…⁴ posta…⁵ country longi…⁶ latit…⁷ phone websi…⁸ updat…⁹ creat…˟
-    ##          <dbl> <chr>   <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>   <chr>   <chr>   <chr> <chr>   <chr>   <chr>  
-    ## 1            1 vintag… Vint… brewpub 600 W… NA      NA      Sauk… Wisc… NA      53583   United… -89.71… 43.282… 6082… <NA>    2022-0… 2022-0…
-    ## 2            1 lake-l… Lake… micro   7556 … NA      NA      Arena Wisc… NA      53503-… United… -89.93… 43.172… 6087… http:/… 2022-0… 2022-0…
-    ## 3            1 port-h… Port… micro   805 B… NA      NA      Wisc… Wisc… NA      53965-… United… -89.74… 43.628… 6082… http:/… 2022-0… 2022-0…
-    ## 4            1 mels-m… Mel'… brewpub 21733… NA      NA      Rich… Wisc… NA      53581   United… -90.38… 43.329… <NA>  http:/… 2022-0… 2022-0…
+    ##          <dbl> <chr>   <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>     <dbl>   <dbl> <chr> <chr>   <chr>   <chr>  
+    ## 1            1 alt-br… ALT … brewpub 1808 … NA      NA      Madi… Wisc… NA      53704-… United…   -89.3    43.1 6083… http:/… 2022-0… 2022-0…
+    ## 2            1 karben… Karb… micro   3698 … NA      NA      Madi… Wisc… NA      53704-… United…   -89.3    43.1 6082… http:/… 2022-0… 2022-0…
+    ## 3            1 flix-b… Flix… brewpub 85 Ea… NA      NA      Madi… Wisc… NA      53704   United…   -89.3    43.1 5122… <NA>    2022-0… 2022-0…
+    ## 4            1 octopi… Octo… micro   1131 … NA      NA      Waun… Wisc… NA      53597-… United…   -89.4    43.2 6086… http:/… 2022-0… 2022-0…
+    ## 5            1 cercis… Cerc… micro   106 N… NA      NA      Colu… Wisc… NA      53925-  United…   -89.0    43.3 9203… <NA>    2022-0… 2022-0…
+    ## 6            1 ooga-b… Ooga… brewpub 301 S… NA      NA      Beav… Wisc… NA      53916   United…   -88.8    43.5 9203… https:… 2022-0… 2022-0…
     ## # … with abbreviated variable names ¹​brewery_type, ²​address_2, ³​address_3, ⁴​county_province, ⁵​postal_code, ⁶​longitude, ⁷​latitude,
     ## #   ⁸​website_url, ⁹​updated_at, ˟​created_at
+
+### Summary of Latitude and Longitude: San Diego, California
+
+The latitude and longitude of San Diego, California is 32.7157 and
+-117.1611, respectively. We can create a tibble of breweries in San
+Diego and find some summary statistics for the latitude and longitude
+variables. Mathematically speaking, these numbers may not make a lot of
+sense, this is just for the sake of showing the process!
+
+``` r
+san_diego <- listByCity(city = "San Diego", length = 50)
+
+#Print the tibble.
+san_diego
+```
+
+    ## # A tibble: 50 × 17
+    ##    id                  name  brewe…¹ street addre…² addre…³ city  state count…⁴ posta…⁵ country longi…⁶ latit…⁷ phone websi…⁸ updat…⁹ creat…˟
+    ##    <chr>               <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>     <dbl>   <dbl> <chr> <chr>   <chr>   <chr>  
+    ##  1 10-barrel-brewing-… 10 B… large   1501 … NA      NA      San … Cali… NA      92101-… United…   -117.    32.7 6195… http:/… 2022-0… 2022-0…
+    ##  2 2kids-brewing-comp… 2Kid… micro   8680 … NA      NA      San … Cali… NA      92126-… United…   -117.    32.9 8584… http:/… 2022-0… 2022-0…
+    ##  3 32-north-brewing-c… 32 N… closed  8655 … NA      NA      San … Cali… NA      92121-… United…   -117.    32.9 <NA>  <NA>    2022-0… 2022-0…
+    ##  4 abnormal-beer-comp… Abno… micro   16990… NA      NA      San … Cali… NA      92127-… United…   -117.    33.0 8586… http:/… 2022-0… 2022-0…
+    ##  5 acoustic-ales-brew… Acou… closed  1795 … NA      NA      San … Cali… NA      92110-… United…   -117.    32.7 6192… http:/… 2022-0… 2022-0…
+    ##  6 alesmith-brewing-c… AleS… region… 9990 … NA      NA      San … Cali… NA      92126-… United…   -117.    32.9 8585… http:/… 2022-0… 2022-0…
+    ##  7 align-brewing-co-s… Alig… micro   8680 … NA      NA      San … Cali… NA      92126-… United…   -117.    32.9 <NA>  http:/… 2022-0… 2022-0…
+    ##  8 alpine-beer-compan… Alpi… brewpub 6550 … NA      NA      San … Cali… NA      92121-… United…   -117.    32.9 6194… http:/… 2022-0… 2022-0…
+    ##  9 alta-brewing-compa… Alta… micro   1983 … NA      NA      San … Cali… NA      92113-… United…   -117.    32.7 6197… http:/… 2022-0… 2022-0…
+    ## 10 amplified-ale-work… Ampl… brewpub 9030 … NA      NA      San … Cali… NA      92121-… United…   -117.    32.9 6503… https:… 2022-0… 2022-0…
+    ## # … with 40 more rows, and abbreviated variable names ¹​brewery_type, ²​address_2, ³​address_3, ⁴​county_province, ⁵​postal_code, ⁶​longitude,
+    ## #   ⁷​latitude, ⁸​website_url, ⁹​updated_at, ˟​created_at
+
+Now, we will use the summarize() function to find some summary
+statistics.
+
+``` r
+#Creating the summary for longitude.
+long_summary <- san_diego %>% summarize(mean = mean(longitude), min = min(longitude), max = max(longitude))
+
+#Print the summary.
+long_summary
+```
+
+    ## # A tibble: 1 × 3
+    ##    mean   min   max
+    ##   <dbl> <dbl> <dbl>
+    ## 1 -117. -117. -117.
+
+``` r
+#Creating the summary for latitude.
+lat_summary <- san_diego %>% summarize(mean = mean(latitude), min = min(latitude), max = max(latitude))
+
+#Print the summary.
+lat_summary
+```
+
+    ## # A tibble: 1 × 3
+    ##    mean   min   max
+    ##   <dbl> <dbl> <dbl>
+    ## 1  32.8  32.7  33.0
+
+As seen above in our list of 50 breweries in San Diego, the average
+longitude is -117.1546 and the average latitude is 32.8133. The
+respective minimum values are -117.2511 and 32.69822. The respective
+maximum values are -117.0858 and 32.02391. As expected, latitude and
+longitude do not vary much within a single city.
 
 ## Contingency Tables
 
@@ -466,7 +561,7 @@ combined_tibble2 <- combined_tibble%>%filter(longitude != "Na", latitude != "Na"
 ggplot(combined_tibble2, aes(x=latitude)) + geom_histogram(fill="green", col="orange")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
 ### Bar Plot
 
@@ -477,7 +572,7 @@ attribute
 ggplot(combined_tibble2, aes(x=brewery_type, fill=brewery_type)) + geom_bar()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
 
 ### Scatter Plot
 
@@ -489,7 +584,7 @@ investigate how do the longitude vary with latitude.
 ggplot(combined_tibble2, aes(y=longitude, x= latitude, col=brewery_type)) + geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
 ### Box Plot
 
@@ -501,16 +596,16 @@ brewery type for the categorical variable.
 ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=brewery_type )) + geom_boxplot()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
 ``` r
 ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-41-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-45-2.png)<!-- -->
 
 ``` r
 ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot() + facet_grid(~state)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-41-3.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-45-3.png)<!-- -->
