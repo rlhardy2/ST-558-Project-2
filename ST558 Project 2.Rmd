@@ -231,7 +231,7 @@ listBySearch <- function(search, length = 20) {
 
 In this section we will use the functions from the previous section to extract our data and then we will analyze it using the `tidyverse` package!
 
-## Data Retreival Examples
+## Data Retreival and Modification Examples
 
 ### Brewpubs and Bars: Wisconsin vs North Dakota
 
@@ -249,13 +249,9 @@ ndakota <- listByState("North Dakota", 50)
 
 #Create the combined tibble.
 combined_tibble <- rbind(wisconsin, ndakota)%>%
-  
   mutate(brewpub_or_bar_1_0 = if_else((brewery_type == "brewpub" | brewery_type == "bar"), 1, 0)) %>%
-  
   group_by(state) %>%
-  
   mutate(percent_brewpub_bar = mean(brewpub_or_bar_1_0)*100) %>% 
-  
   select(brewpub_or_bar_1_0, percent_brewpub_bar, everything())
 
 #Print the combined tibble.
@@ -280,15 +276,23 @@ As seen in the modified tibble below, of the 50 breweries closest to Madison, Wi
 ```{r}
 #Create the modified tibble.
 madison_modified <- madison %>% 
-  
   mutate(lat_and_long = if_else((longitude > -89.4508 & latitude > 43.1222), 1, 0)) %>%
-  
   select(lat_and_long, everything()) %>%
-  
   filter(lat_and_long == 1)
 
 #Print the modified tibble.
 madison_modified
+```
+
+## Numerical Summary Examples
+
+### Summary of Latitude and Longitude: Wisconsin vs North Dakota
+ 
+Next we can create some numerical summaries for the mean and standard deviations of the longitude and latitude variables across our two states of interest: Wisconsin and North Dakota. It should be noted that the "combine_tibble" object is already grouped by our state variable and we remove the missing values (if there are any).
+
+```{r}
+combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>% 
+  summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
 ```
 
 ### Summary of Latitude and Longitude: San Diego, California
@@ -306,13 +310,13 @@ Now, we will use the summarize() function to find some summary statistics.
 
 ```{r}
 #Creating the summary for longitude.
-long_summary <- san_diego %>% summarize(mean = mean(longitude), min = min(longitude), max = max(longitude))
+long_summary <- san_diego %>% summarize(mean_long = mean(longitude), min_long = min(longitude), max_long = max(longitude))
 
 #Print the summary.
 long_summary
 
 #Creating the summary for latitude.
-lat_summary <- san_diego %>% summarize(mean = mean(latitude), min = min(latitude), max = max(latitude))
+lat_summary <- san_diego %>% summarize(mean_lat = mean(latitude), min_lat = min(latitude), max_lat = max(latitude))
 
 #Print the summary.
 lat_summary
@@ -320,28 +324,45 @@ lat_summary
 
 As seen above in our list of 50 breweries in San Diego, the average longitude is -117.1546 and the average latitude is 32.8133. The respective minimum values are -117.2511 and 32.69822. The respective maximum values are -117.0858 and 32.02391. As expected, latitude and longitude do not vary much within a single city.
 
+### Summary of Latitude and Longitude Across Brewery Type: San Diego, California
+
+Next we can create some numerical summaries for the mean and standard deviations of the longitude and latitude variables across the brewery types in San Diego, California. Any missing values are removed as is good practice.
+
+```{r}
+san_diego %>% group_by(brewery_type) %>% filter(longitude != "Na", latitude != "Na") %>% 
+  summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
+```
+
 ## Contingency Tables
+
+### Brewery Types: Wisconsin vs North Dakota
  
-We are interested in the two states with the highest consumption of alcohol, namely Wisconsin and North Dakota. We show a contingency table for brewery type in Wisconsin, another contingency table for brewery type in North Dakota and finally a two-way contingency table for brewery_type for both states.
+We are interested in the two states with the highest consumption of alcohol, namely Wisconsin and North Dakota. We show a contingency table for brewery type in Wisconsin, another contingency table for brewery type in North Dakota, and a two-way contingency table for brewery_type for both states.
  
 ```{r}
-wisconsin_only<-combined_tibble %>% filter(state == "Wisconsin")
-table(wisconsin_only$brewery_type)
+table(wisconsin$brewery_type)
 
-n_dakota_only<-combined_tibble %>% filter(state == "North Dakota")
-table(n_dakota_only$brewery_type)
+table(ndakota$brewery_type)
   
 table(combined_tibble$brewery_type, combined_tibble$state)
 ```
- 
-Next we create some numerical summaries for the mean and standard deviations of the longitude and latitude values across our two states of interest Wisconsin and North Dakota. It should be noted that the combine_tibble object is already group_by(state) and we remove the Na values.
+
+Lastly, we will show a two-way contingency table for brewery type by state for each setting of the "brewpub_or_bar_1_0" variable!
 
 ```{r}
-combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
-  mutate(longitude = as.numeric(longitude))%>% 
-  mutate(latitude = as.numeric(latitude))%>%
-summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
-  
+table(combined_tibble$brewery_type, combined_tibble$state, combined_tibble$brewpub_or_bar_1_0)
+```
+
+### Brewery Types: Random Tibble of 50
+
+For this example, we will pull a tibble of 50 breweries using the listBreweries() function. We will first show a contingency table of brewery types, and then a table of brewery types by country.
+
+```{r}
+randomBreweries <- listBreweries(length = 50)
+
+table(randomBreweries$brewery_type)
+
+table(randomBreweries$brewery_type, randomBreweries$country)
 ```
 
 ## Plots

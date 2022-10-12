@@ -29,19 +29,35 @@ Matthew Sookoo and Rachel Hardy
 -   <a href="#data-retreival-and-exploratory-analysis"
     id="toc-data-retreival-and-exploratory-analysis">Data Retreival and
     Exploratory Analysis</a>
-    -   <a href="#data-retreival-examples" id="toc-data-retreival-examples">Data
-        Retreival Examples</a>
+    -   <a href="#data-retreival-and-modification-examples"
+        id="toc-data-retreival-and-modification-examples">Data Retreival and
+        Modification Examples</a>
         -   <a href="#brewpubs-and-bars-wisconsin-vs-north-dakota"
             id="toc-brewpubs-and-bars-wisconsin-vs-north-dakota">Brewpubs and Bars:
             Wisconsin vs North Dakota</a>
         -   <a href="#exploring-distance-madison-wisconsin"
             id="toc-exploring-distance-madison-wisconsin">Exploring Distance:
             Madison, Wisconsin</a>
+    -   <a href="#numerical-summary-examples"
+        id="toc-numerical-summary-examples">Numerical Summary Examples</a>
+        -   <a href="#summary-of-latitude-and-longitude-wisconsin-vs-north-dakota"
+            id="toc-summary-of-latitude-and-longitude-wisconsin-vs-north-dakota">Summary
+            of Latitude and Longitude: Wisconsin vs North Dakota</a>
         -   <a href="#summary-of-latitude-and-longitude-san-diego-california"
             id="toc-summary-of-latitude-and-longitude-san-diego-california">Summary
             of Latitude and Longitude: San Diego, California</a>
+        -   <a
+            href="#summary-of-latitude-and-longitude-across-brewery-type-san-diego-california"
+            id="toc-summary-of-latitude-and-longitude-across-brewery-type-san-diego-california">Summary
+            of Latitude and Longitude Across Brewery Type: San Diego, California</a>
     -   <a href="#contingency-tables" id="toc-contingency-tables">Contingency
         Tables</a>
+        -   <a href="#brewery-types-wisconsin-vs-north-dakota"
+            id="toc-brewery-types-wisconsin-vs-north-dakota">Brewery Types:
+            Wisconsin vs North Dakota</a>
+        -   <a href="#brewery-types-random-tibble-of-50"
+            id="toc-brewery-types-random-tibble-of-50">Brewery Types: Random Tibble
+            of 50</a>
     -   <a href="#plots" id="toc-plots">Plots</a>
         -   <a href="#histogram" id="toc-histogram">Histogram</a>
         -   <a href="#bar-plot" id="toc-bar-plot">Bar Plot</a>
@@ -296,7 +312,7 @@ In this section we will use the functions from the previous section to
 extract our data and then we will analyze it using the `tidyverse`
 package!
 
-## Data Retreival Examples
+## Data Retreival and Modification Examples
 
 ### Brewpubs and Bars: Wisconsin vs North Dakota
 
@@ -326,13 +342,9 @@ ndakota <- listByState("North Dakota", 50)
 
 #Create the combined tibble.
 combined_tibble <- rbind(wisconsin, ndakota)%>%
-  
   mutate(brewpub_or_bar_1_0 = if_else((brewery_type == "brewpub" | brewery_type == "bar"), 1, 0)) %>%
-  
   group_by(state) %>%
-  
   mutate(percent_brewpub_bar = mean(brewpub_or_bar_1_0)*100) %>% 
-  
   select(brewpub_or_bar_1_0, percent_brewpub_bar, everything())
 
 #Print the combined tibble.
@@ -398,11 +410,8 @@ latitude away from the origin point.
 ``` r
 #Create the modified tibble.
 madison_modified <- madison %>% 
-  
   mutate(lat_and_long = if_else((longitude > -89.4508 & latitude > 43.1222), 1, 0)) %>%
-  
   select(lat_and_long, everything()) %>%
-  
   filter(lat_and_long == 1)
 
 #Print the modified tibble.
@@ -420,6 +429,27 @@ madison_modified
     ## 6            1 ooga-b… Ooga… brewpub 301 S… NA      NA      Beav… Wisc… NA      53916   United…   -88.8    43.5 9203… https:… 2022-0… 2022-0…
     ## # … with abbreviated variable names ¹​brewery_type, ²​address_2, ³​address_3, ⁴​county_province, ⁵​postal_code, ⁶​longitude, ⁷​latitude,
     ## #   ⁸​website_url, ⁹​updated_at, ˟​created_at
+
+## Numerical Summary Examples
+
+### Summary of Latitude and Longitude: Wisconsin vs North Dakota
+
+Next we can create some numerical summaries for the mean and standard
+deviations of the longitude and latitude variables across our two states
+of interest: Wisconsin and North Dakota. It should be noted that the
+“combine_tibble” object is already grouped by our state variable and we
+remove the missing values (if there are any).
+
+``` r
+combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>% 
+  summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
+```
+
+    ## # A tibble: 2 × 5
+    ##   state        `mean(longitude)` `mean(latitude)` `sd(longitude)` `sd(latitude)`
+    ##   <chr>                    <dbl>            <dbl>           <dbl>          <dbl>
+    ## 1 North Dakota             -99.3             47.2            2.39          0.554
+    ## 2 Wisconsin                -89.1             43.7            1.33          0.853
 
 ### Summary of Latitude and Longitude: San Diego, California
 
@@ -457,29 +487,29 @@ statistics.
 
 ``` r
 #Creating the summary for longitude.
-long_summary <- san_diego %>% summarize(mean = mean(longitude), min = min(longitude), max = max(longitude))
+long_summary <- san_diego %>% summarize(mean_long = mean(longitude), min_long = min(longitude), max_long = max(longitude))
 
 #Print the summary.
 long_summary
 ```
 
     ## # A tibble: 1 × 3
-    ##    mean   min   max
-    ##   <dbl> <dbl> <dbl>
-    ## 1 -117. -117. -117.
+    ##   mean_long min_long max_long
+    ##       <dbl>    <dbl>    <dbl>
+    ## 1     -117.    -117.    -117.
 
 ``` r
 #Creating the summary for latitude.
-lat_summary <- san_diego %>% summarize(mean = mean(latitude), min = min(latitude), max = max(latitude))
+lat_summary <- san_diego %>% summarize(mean_lat = mean(latitude), min_lat = min(latitude), max_lat = max(latitude))
 
 #Print the summary.
 lat_summary
 ```
 
     ## # A tibble: 1 × 3
-    ##    mean   min   max
-    ##   <dbl> <dbl> <dbl>
-    ## 1  32.8  32.7  33.0
+    ##   mean_lat min_lat max_lat
+    ##      <dbl>   <dbl>   <dbl>
+    ## 1     32.8    32.7    33.0
 
 As seen above in our list of 50 breweries in San Diego, the average
 longitude is -117.1546 and the average latitude is 32.8133. The
@@ -487,17 +517,41 @@ respective minimum values are -117.2511 and 32.69822. The respective
 maximum values are -117.0858 and 32.02391. As expected, latitude and
 longitude do not vary much within a single city.
 
+### Summary of Latitude and Longitude Across Brewery Type: San Diego, California
+
+Next we can create some numerical summaries for the mean and standard
+deviations of the longitude and latitude variables across the brewery
+types in San Diego, California. Any missing values are removed as is
+good practice.
+
+``` r
+san_diego %>% group_by(brewery_type) %>% filter(longitude != "Na", latitude != "Na") %>% 
+  summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
+```
+
+    ## # A tibble: 7 × 5
+    ##   brewery_type `mean(longitude)` `mean(latitude)` `sd(longitude)` `sd(latitude)`
+    ##   <chr>                    <dbl>            <dbl>           <dbl>          <dbl>
+    ## 1 brewpub                  -117.             32.8          0.0417         0.104 
+    ## 2 closed                   -117.             32.8          0.0282         0.0561
+    ## 3 contract                 -117.             32.9         NA             NA     
+    ## 4 large                    -117.             32.8          0.0237         0.0856
+    ## 5 micro                    -117.             32.8          0.0358         0.0803
+    ## 6 planning                 -117.             32.7          0              0     
+    ## 7 regional                 -117.             32.8          0.0605         0.0721
+
 ## Contingency Tables
+
+### Brewery Types: Wisconsin vs North Dakota
 
 We are interested in the two states with the highest consumption of
 alcohol, namely Wisconsin and North Dakota. We show a contingency table
 for brewery type in Wisconsin, another contingency table for brewery
-type in North Dakota and finally a two-way contingency table for
-brewery_type for both states.
+type in North Dakota, and a two-way contingency table for brewery_type
+for both states.
 
 ``` r
-wisconsin_only<-combined_tibble %>% filter(state == "Wisconsin")
-table(wisconsin_only$brewery_type)
+table(wisconsin$brewery_type)
 ```
 
     ## 
@@ -505,8 +559,7 @@ table(wisconsin_only$brewery_type)
     ##       19        3       19        5        4
 
 ``` r
-n_dakota_only<-combined_tibble %>% filter(state == "North Dakota")
-table(n_dakota_only$brewery_type)
+table(ndakota$brewery_type)
 ```
 
     ## 
@@ -528,24 +581,67 @@ table(combined_tibble$brewery_type, combined_tibble$state)
     ##   planning            0         5
     ##   regional            0         4
 
-Next we create some numerical summaries for the mean and standard
-deviations of the longitude and latitude values across our two states of
-interest Wisconsin and North Dakota. It should be noted that the
-combine_tibble object is already group_by(state) and we remove the Na
-values.
+Lastly, we will show a two-way contingency table for brewery type by
+state for each setting of the “brewpub_or_bar_1\_0” variable!
 
 ``` r
-combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
-  mutate(longitude = as.numeric(longitude))%>% 
-  mutate(latitude = as.numeric(latitude))%>%
-summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
+table(combined_tibble$brewery_type, combined_tibble$state, combined_tibble$brewpub_or_bar_1_0)
 ```
 
-    ## # A tibble: 2 × 5
-    ##   state        `mean(longitude)` `mean(latitude)` `sd(longitude)` `sd(latitude)`
-    ##   <chr>                    <dbl>            <dbl>           <dbl>          <dbl>
-    ## 1 North Dakota             -99.3             47.2            2.39          0.554
-    ## 2 Wisconsin                -89.1             43.7            1.33          0.853
+    ## , ,  = 0
+    ## 
+    ##           
+    ##            North Dakota Wisconsin
+    ##   bar                 0         0
+    ##   brewpub             0         0
+    ##   closed              3         0
+    ##   contract            0         3
+    ##   micro              12        19
+    ##   nano                2         0
+    ##   planning            0         5
+    ##   regional            0         4
+    ## 
+    ## , ,  = 1
+    ## 
+    ##           
+    ##            North Dakota Wisconsin
+    ##   bar                 1         0
+    ##   brewpub             8        19
+    ##   closed              0         0
+    ##   contract            0         0
+    ##   micro               0         0
+    ##   nano                0         0
+    ##   planning            0         0
+    ##   regional            0         0
+
+### Brewery Types: Random Tibble of 50
+
+For this example, we will pull a tibble of 50 breweries using the
+listBreweries() function. We will first show a contingency table of
+brewery types, and then a table of brewery types by country.
+
+``` r
+randomBreweries <- listBreweries(length = 50)
+
+table(randomBreweries$brewery_type)
+```
+
+    ## 
+    ##    brewpub     closed   contract      large      micro proprietor 
+    ##          9          2          1          7         30          1
+
+``` r
+table(randomBreweries$brewery_type, randomBreweries$country)
+```
+
+    ##             
+    ##              Ireland United States
+    ##   brewpub          0             9
+    ##   closed           0             2
+    ##   contract         0             1
+    ##   large            0             7
+    ##   micro            1            29
+    ##   proprietor       0             1
 
 ## Plots
 
@@ -561,7 +657,7 @@ combined_tibble2 <- combined_tibble%>%filter(longitude != "Na", latitude != "Na"
 ggplot(combined_tibble2, aes(x=latitude)) + geom_histogram(fill="green", col="orange")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 
 ### Bar Plot
 
@@ -572,7 +668,7 @@ attribute
 ggplot(combined_tibble2, aes(x=brewery_type, fill=brewery_type)) + geom_bar()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
 
 ### Scatter Plot
 
@@ -584,7 +680,7 @@ investigate how do the longitude vary with latitude.
 ggplot(combined_tibble2, aes(y=longitude, x= latitude, col=brewery_type)) + geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
 ### Box Plot
 
@@ -596,16 +692,16 @@ brewery type for the categorical variable.
 ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=brewery_type )) + geom_boxplot()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
 
 ``` r
 ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-45-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-33-2.png)<!-- -->
 
 ``` r
 ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot() + facet_grid(~state)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-45-3.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-33-3.png)<!-- -->
