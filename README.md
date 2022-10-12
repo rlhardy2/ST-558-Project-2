@@ -29,13 +29,21 @@ Matthew Sookoo and Rachel Hardy
 -   <a href="#data-retreival-and-exploratory-analysis"
     id="toc-data-retreival-and-exploratory-analysis">Data Retreival and
     Exploratory Analysis</a>
-    -   <a href="#contingency-table" id="toc-contingency-table">contingency
-        table</a>
+    -   <a href="#data-retreival-examples" id="toc-data-retreival-examples">Data
+        Retreival Examples</a>
+        -   <a href="#brewpubs-and-bars-wisconsin-vs-north-dakota"
+            id="toc-brewpubs-and-bars-wisconsin-vs-north-dakota">Brewpubs and Bars:
+            Wisconsin vs North Dakota</a>
+        -   <a href="#distance-from-madison-wisconsin"
+            id="toc-distance-from-madison-wisconsin">DIstance from Madison,
+            Wisconsin</a>
+    -   <a href="#contingency-tables" id="toc-contingency-tables">Contingency
+        Tables</a>
     -   <a href="#plots" id="toc-plots">Plots</a>
         -   <a href="#histogram" id="toc-histogram">Histogram</a>
-        -   <a href="#barplot" id="toc-barplot">Barplot</a>
-        -   <a href="#scatter-plot" id="toc-scatter-plot">scatter plot</a>
-        -   <a href="#box-plot" id="toc-box-plot">Box plot</a>
+        -   <a href="#bar-plot" id="toc-bar-plot">Bar Plot</a>
+        -   <a href="#scatter-plot" id="toc-scatter-plot">Scatter Plot</a>
+        -   <a href="#box-plot" id="toc-box-plot">Box Plot</a>
 
 # Introduction
 
@@ -261,80 +269,130 @@ In this section we will use the functions from the previous section to
 extract our data and then we will analyze it using the `tidyverse`
 package!
 
-Some requirements for this section are listed below:
+## Data Retreival Examples
 
--   You should pull data from at least two calls to your obtaining data
-    function (possibly combining them into one).
--   You should create at least one new variable that is a function of
-    other variables.
--   You should create some contingency tables.
--   You should create numerical summaries for some quantitative
-    variables at each setting of some of your categorical variables.
--   You should create at least five plots utilizing coloring, grouping,
-    etc. All plots should have nice labels and titles.
-    -   You should have at least one bar plot, one histogram, one box
-        plot, and one scatter plot.
+### Brewpubs and Bars: Wisconsin vs North Dakota
 
-“DELETE ABOVE TEXT LATER”
-
-We maybe interested in the percentage of brewpub (A beer-focused
-restaurant or restaurant/bar with a brewery on-premise) or bar (A bar.
-No brewery equipment on premise) breweries in Wisconsin and North Dakota
-as these two states were found to be the two states that consumed the
-most alcohol. click
-[Here](https://www.thecentersquare.com/wisconsin/this-is-where-wisconsin-ranks-among-the-drunkest-states-in-america/article_3ccd11a4-c261-563b-919a-e02a0254b6dd.html)
+We maybe interested in the percentage of brewpubs (a beer-focused
+restaurant or restaurant/bar with a brewery on-premise) or bars (no
+brewery equipment on premise) in Wisconsin and North Dakota as these two
+states were found to be the two states that consumed the most alcohol.
+click
+[here](https://www.thecentersquare.com/wisconsin/this-is-where-wisconsin-ranks-among-the-drunkest-states-in-america/article_3ccd11a4-c261-563b-919a-e02a0254b6dd.html)
 for more information.
+
+Below, we create a new helper variable “brewpub_or_bar_1\_0” to display
+1 if brewery type is either “brewpub or”bar” and 0 otherwise. We then
+group the observations by state to find the percent of breweries in each
+state that are either a brewpub or a bar.
+
+As seen in the tibble below, 38.0% of Wisconsin breweries are either a
+brewpub or a bar, while only 34.6% of North Dakota breweries are either
+a brewpub or a bar.
+
+Note that this does not include all possible breweries, as our API only
+allows us to access 50 observations for each function called.
 
 ``` r
 wisconsin <- listByState("Wisconsin", 50)
 ndakota <- listByState("North Dakota", 50)
-combined_tibble <- rbind(wisconsin, ndakota)%>%
-# we create a new helper variable "brewpub_or_bar_1_0" to display 1 if brewery type is either "brewpub or "bar". We delete this variable later on
-  mutate(brewpub_or_bar_1_0=if_else((brewery_type == "brewpub"|brewery_type == "bar"), 1, 0))%>%
 
+#Create the combined tibble.
+combined_tibble <- rbind(wisconsin, ndakota)%>%
   
-  group_by(state)%>%
+  mutate(brewpub_or_bar_1_0 = if_else((brewery_type == "brewpub" | brewery_type == "bar"), 1, 0)) %>%
+  
+  group_by(state) %>%
   
   mutate(percent_brewpub_bar = mean(brewpub_or_bar_1_0)*100) %>% 
   
-  # we delete the unwanted variable brewpub_or_bar_1_0
-  
-  select(-brewpub_or_bar_1_0)%>%
-  
-  select(percent_brewpub_bar,  everything())
+  select(brewpub_or_bar_1_0, percent_brewpub_bar, everything())
 
+#Print the combined tibble.
 combined_tibble
 ```
 
-    ## # A tibble: 76 × 18
-    ##    percent_b…¹ id    name  brewe…² street addre…³ addre…⁴ city  state count…⁵ posta…⁶ country
-    ##          <dbl> <chr> <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>  
-    ##  1          38 1840… 1840… micro   342 E… NA      NA      Milw… Wisc… NA      53207-… United…
-    ##  2          38 3-sh… 3 Sh… micro   1837 … NA      NA      Sheb… Wisc… NA      53083-… United…
-    ##  3          38 608-… 608 … planni… <NA>   NA      NA      La C… Wisc… NA      54603   United…
-    ##  4          38 841-… 841 … brewpub 841 E… NA      NA      Whit… Wisc… NA      53190-… United…
-    ##  5          38 8th-… 8th … brewpub 1132 … NA      NA      Sheb… Wisc… NA      53081-… United…
-    ##  6          38 agon… Agon… planni… <NA>   NA      NA      Rice… Wisc… NA      54868-… United…
-    ##  7          38 ahna… Ahna… micro   N9153… NA      NA      Algo… Wisc… NA      54201-… United…
-    ##  8          38 ale-… Ale … region… 2002 … NA      NA      Madi… Wisc… NA      53704-… United…
-    ##  9          38 alt-… ALT … brewpub 1808 … NA      NA      Madi… Wisc… NA      53704-… United…
-    ## 10          38 angr… Angr… brewpub 10440… NA      NA      Hayw… Wisc… NA      54843-… United…
-    ## # … with 66 more rows, 6 more variables: longitude <chr>, latitude <chr>, phone <chr>,
-    ## #   website_url <chr>, updated_at <chr>, created_at <chr>, and abbreviated variable names
-    ## #   ¹​percent_brewpub_bar, ²​brewery_type, ³​address_2, ⁴​address_3, ⁵​county_province,
-    ## #   ⁶​postal_code
+    ## # A tibble: 76 × 19
+    ##    brewpub_or_…¹ perce…² id    name  brewe…³ street addre…⁴ addre…⁵ city  state count…⁶ posta…⁷ country longi…⁸ latit…⁹ phone websi…˟ updat…˟
+    ##            <dbl>   <dbl> <chr> <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>   <chr>   <chr>   <chr> <chr>   <chr>  
+    ##  1             0      38 1840… 1840… micro   342 E… NA      NA      Milw… Wisc… NA      53207-… United… -87.90… 43.004… 4142… http:/… 2022-0…
+    ##  2             0      38 3-sh… 3 Sh… micro   1837 … NA      NA      Sheb… Wisc… NA      53083-… United… -87.73… 43.773… 9209… http:/… 2022-0…
+    ##  3             0      38 608-… 608 … planni… <NA>   NA      NA      La C… Wisc… NA      54603   United… <NA>    <NA>    <NA>  http:/… 2022-0…
+    ##  4             1      38 841-… 841 … brewpub 841 E… NA      NA      Whit… Wisc… NA      53190-… United… -88.71… 42.832… 2624… <NA>    2022-0…
+    ##  5             1      38 8th-… 8th … brewpub 1132 … NA      NA      Sheb… Wisc… NA      53081-… United… -87.71… 43.756… 9202… http:/… 2022-0…
+    ##  6             0      38 agon… Agon… planni… <NA>   NA      NA      Rice… Wisc… NA      54868-… United… <NA>    <NA>    7153… http:/… 2022-0…
+    ##  7             0      38 ahna… Ahna… micro   N9153… NA      NA      Algo… Wisc… NA      54201-… United… <NA>    <NA>    9202… http:/… 2022-0…
+    ##  8             0      38 ale-… Ale … region… 2002 … NA      NA      Madi… Wisc… NA      53704-… United… -89.35… 43.120… 6086… http:/… 2022-0…
+    ##  9             1      38 alt-… ALT … brewpub 1808 … NA      NA      Madi… Wisc… NA      53704-… United… -89.33… 43.125… 6083… http:/… 2022-0…
+    ## 10             1      38 angr… Angr… brewpub 10440… NA      NA      Hayw… Wisc… NA      54843-… United… -91.48… 46.010… 7159… http:/… 2022-0…
+    ## # … with 66 more rows, 1 more variable: created_at <chr>, and abbreviated variable names ¹​brewpub_or_bar_1_0, ²​percent_brewpub_bar,
+    ## #   ³​brewery_type, ⁴​address_2, ⁵​address_3, ⁶​county_province, ⁷​postal_code, ⁸​longitude, ⁹​latitude, ˟​website_url, ˟​updated_at
 
-A “brewpub” according is defined as a beer-focused restaurant or
-restaurant/bar with a brewery on-premise and “bar” is defined as a bar
-with no brewery equipment on premise.
+### DIstance from Madison, Wisconsin
 
-From the tibble above we can see that 38 percent (length 50) of all the
-breweries in Wisconsin are either a brewpub or a bar and in North Dakota
-approximately 34.6 percent (length 50) of all the breweries in Wisconsin
-are either a brewpub or a bar. This could be a possibly explanation for
-the high consumption of alcohol in those states.
+Since Wisconsin beat North Dakota in the comparison above, let’s see how
+many breweries are close to the capital of the state: Madison,
+Wisconsin. The latitude and longitude of Madison, Wisconsin is 43.0722
+and -89.4008. The 50 breweries closest to Madison, Wisconsin can be seen
+in the tibble below.
 
-## contingency table
+``` r
+madison <- listByDistance(lat = 43.0722, long = -89.4008, length = 50)
+
+#Print the tibble.
+madison
+```
+
+    ## # A tibble: 50 × 17
+    ##    id                  name  brewe…¹ street addre…² addre…³ city  state count…⁴ posta…⁵ country longi…⁶ latit…⁷ phone websi…⁸ updat…⁹ creat…˟
+    ##    <chr>               <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>   <chr>   <chr>   <chr> <chr>   <chr>   <chr>  
+    ##  1 luckys-1313-brewpu… Luck… brewpub 1313 … NA      NA      Madi… Wisc… NA      53715-… United… -89.40… 43.067… 6082… http:/… 2022-0… 2022-0…
+    ##  2 rockhound-brewing-… Rock… brewpub 444 S… NA      NA      Madi… Wisc… NA      53715-… United… -89.40… 43.062… 6082… http:/… 2022-0… 2022-0…
+    ##  3 funk-factory-geuze… Funk… micro   1602 … NA      NA      Madi… Wisc… NA      53715-… United… -89.39… 43.050… <NA>  http:/… 2022-0… 2022-0…
+    ##  4 working-draft-beer… Work… micro   1129 … NA      NA      Madi… Wisc… NA      53703-… United… -89.36… 43.083… <NA>  http:/… 2022-0… 2022-0…
+    ##  5 great-dane-pub-and… Grea… brewpub 357 P… NA      NA      Madi… Wisc… NA      53705-… United… -89.45… 43.070… 6086… http:/… 2022-0… 2022-0…
+    ##  6 one-barrel-brewing… One … micro   2001 … NA      NA      Madi… Wisc… NA      53704-… United… -89.35… 43.091… 6086… http:/… 2022-0… 2022-0…
+    ##  7 next-door-brewing-… Next… brewpub 2439 … NA      NA      Madi… Wisc… NA      53704-… United… -89.34… 43.093… 6087… http:/… 2022-0… 2022-0…
+    ##  8 vintage-brewing-co… Vint… brewpub 674 S… NA      NA      Madi… Wisc… NA      53711-… United… -89.47… 43.051… 6082… http:/… 2022-0… 2022-0…
+    ##  9 great-dane-pub-and… Grea… brewpub 2980 … NA      NA      Fitc… Wisc… NA      53711-… United… -89.42… 43.018… 6084… http:/… 2022-0… 2022-0…
+    ## 10 ale-asylum-madison  Ale … region… 2002 … NA      NA      Madi… Wisc… NA      53704-… United… -89.35… 43.120… 6086… http:/… 2022-0… 2022-0…
+    ## # … with 40 more rows, and abbreviated variable names ¹​brewery_type, ²​address_2, ³​address_3, ⁴​county_province, ⁵​postal_code, ⁶​longitude,
+    ## #   ⁷​latitude, ⁸​website_url, ⁹​updated_at, ˟​created_at
+
+From the tibble above, we can create a modified tibble showing us which
+breweries have a distance away from the origin point of both 0.05
+longitude *AND* 0.05 latitude. If the “lat_and_long” variable equals 1,
+this is true, and if it equals 0, this is false.
+
+As seen in the modified tibble below, of the 50 breweries closest to
+Madison, Wisconsin, only 4 are both more than 0.05 longitude and 0.05
+latitude away from the origin point.
+
+``` r
+#Create the modified tibble.
+madison_modified <- madison %>% 
+  
+  mutate(lat_and_long = if_else((longitude > -89.4508 & latitude > 43.1222), 1, 0)) %>%
+  
+  select(lat_and_long, everything()) %>%
+  
+  filter(lat_and_long == 1)
+
+#Print the modified tibble.
+madison_modified
+```
+
+    ## # A tibble: 4 × 18
+    ##   lat_and_long id      name  brewe…¹ street addre…² addre…³ city  state count…⁴ posta…⁵ country longi…⁶ latit…⁷ phone websi…⁸ updat…⁹ creat…˟
+    ##          <dbl> <chr>   <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>   <chr>   <chr>   <chr> <chr>   <chr>   <chr>  
+    ## 1            1 vintag… Vint… brewpub 600 W… NA      NA      Sauk… Wisc… NA      53583   United… -89.71… 43.282… 6082… <NA>    2022-0… 2022-0…
+    ## 2            1 lake-l… Lake… micro   7556 … NA      NA      Arena Wisc… NA      53503-… United… -89.93… 43.172… 6087… http:/… 2022-0… 2022-0…
+    ## 3            1 port-h… Port… micro   805 B… NA      NA      Wisc… Wisc… NA      53965-… United… -89.74… 43.628… 6082… http:/… 2022-0… 2022-0…
+    ## 4            1 mels-m… Mel'… brewpub 21733… NA      NA      Rich… Wisc… NA      53581   United… -90.38… 43.329… <NA>  http:/… 2022-0… 2022-0…
+    ## # … with abbreviated variable names ¹​brewery_type, ²​address_2, ³​address_3, ⁴​county_province, ⁵​postal_code, ⁶​longitude, ⁷​latitude,
+    ## #   ⁸​website_url, ⁹​updated_at, ˟​created_at
+
+## Contingency Tables
 
 We are interested in the two states with the highest consumption of
 alcohol, namely Wisconsin and North Dakota. We show a contingency table
@@ -408,9 +466,9 @@ combined_tibble2 <- combined_tibble%>%filter(longitude != "Na", latitude != "Na"
 ggplot(combined_tibble2, aes(x=latitude)) + geom_histogram(fill="green", col="orange")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
-### Barplot
+### Bar Plot
 
 We use a categorical variable we use fill as an aesthetic rather than an
 attribute
@@ -419,9 +477,9 @@ attribute
 ggplot(combined_tibble2, aes(x=brewery_type, fill=brewery_type)) + geom_bar()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
-### scatter plot
+### Scatter Plot
 
 We use the scatter plot to understand the distribution between two
 numeric columns which we is our longitude and latitude columns. We
@@ -431,9 +489,9 @@ investigate how do the longitude vary with latitude.
 ggplot(combined_tibble2, aes(y=longitude, x= latitude, col=brewery_type)) + geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
-### Box plot
+### Box Plot
 
 In a box plot we try to investigate how a numerical value change with a
 categorical value. We choose latitude for the numerical value and
@@ -443,16 +501,16 @@ brewery type for the categorical variable.
 ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=brewery_type )) + geom_boxplot()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
 
 ``` r
 ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-41-2.png)<!-- -->
 
 ``` r
 ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot() + facet_grid(~state)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-41-3.png)<!-- -->
