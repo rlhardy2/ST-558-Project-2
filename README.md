@@ -32,6 +32,10 @@ Matthew Sookoo and Rachel Hardy
     -   <a href="#contingency-table" id="toc-contingency-table">contingency
         table</a>
     -   <a href="#plots" id="toc-plots">Plots</a>
+        -   <a href="#histogram" id="toc-histogram">Histogram</a>
+        -   <a href="#barplot" id="toc-barplot">Barplot</a>
+        -   <a href="#scatter-plot" id="toc-scatter-plot">scatter plot</a>
+        -   <a href="#box-plot" id="toc-box-plot">Box plot</a>
 
 # Introduction
 
@@ -302,23 +306,23 @@ combined_tibble <- rbind(wisconsin, ndakota)%>%
 combined_tibble
 ```
 
-    ## # A tibble: 76 x 18
-    ##    percent_b~1 id    name  brewe~2 street addre~3 addre~4 city  state count~5 posta~6 country
+    ## # A tibble: 76 × 18
+    ##    percent_b…¹ id    name  brewe…² street addre…³ addre…⁴ city  state count…⁵ posta…⁶ country
     ##          <dbl> <chr> <chr> <chr>   <chr>  <lgl>   <lgl>   <chr> <chr> <lgl>   <chr>   <chr>  
-    ##  1          38 1840~ 1840~ micro   342 E~ NA      NA      Milw~ Wisc~ NA      53207-~ United~
-    ##  2          38 3-sh~ 3 Sh~ micro   1837 ~ NA      NA      Sheb~ Wisc~ NA      53083-~ United~
-    ##  3          38 608-~ 608 ~ planni~ <NA>   NA      NA      La C~ Wisc~ NA      54603   United~
-    ##  4          38 841-~ 841 ~ brewpub 841 E~ NA      NA      Whit~ Wisc~ NA      53190-~ United~
-    ##  5          38 8th-~ 8th ~ brewpub 1132 ~ NA      NA      Sheb~ Wisc~ NA      53081-~ United~
-    ##  6          38 agon~ Agon~ planni~ <NA>   NA      NA      Rice~ Wisc~ NA      54868-~ United~
-    ##  7          38 ahna~ Ahna~ micro   N9153~ NA      NA      Algo~ Wisc~ NA      54201-~ United~
-    ##  8          38 ale-~ Ale ~ region~ 2002 ~ NA      NA      Madi~ Wisc~ NA      53704-~ United~
-    ##  9          38 alt-~ ALT ~ brewpub 1808 ~ NA      NA      Madi~ Wisc~ NA      53704-~ United~
-    ## 10          38 angr~ Angr~ brewpub 10440~ NA      NA      Hayw~ Wisc~ NA      54843-~ United~
-    ## # ... with 66 more rows, 6 more variables: longitude <chr>, latitude <chr>, phone <chr>,
+    ##  1          38 1840… 1840… micro   342 E… NA      NA      Milw… Wisc… NA      53207-… United…
+    ##  2          38 3-sh… 3 Sh… micro   1837 … NA      NA      Sheb… Wisc… NA      53083-… United…
+    ##  3          38 608-… 608 … planni… <NA>   NA      NA      La C… Wisc… NA      54603   United…
+    ##  4          38 841-… 841 … brewpub 841 E… NA      NA      Whit… Wisc… NA      53190-… United…
+    ##  5          38 8th-… 8th … brewpub 1132 … NA      NA      Sheb… Wisc… NA      53081-… United…
+    ##  6          38 agon… Agon… planni… <NA>   NA      NA      Rice… Wisc… NA      54868-… United…
+    ##  7          38 ahna… Ahna… micro   N9153… NA      NA      Algo… Wisc… NA      54201-… United…
+    ##  8          38 ale-… Ale … region… 2002 … NA      NA      Madi… Wisc… NA      53704-… United…
+    ##  9          38 alt-… ALT … brewpub 1808 … NA      NA      Madi… Wisc… NA      53704-… United…
+    ## 10          38 angr… Angr… brewpub 10440… NA      NA      Hayw… Wisc… NA      54843-… United…
+    ## # … with 66 more rows, 6 more variables: longitude <chr>, latitude <chr>, phone <chr>,
     ## #   website_url <chr>, updated_at <chr>, created_at <chr>, and abbreviated variable names
-    ## #   1: percent_brewpub_bar, 2: brewery_type, 3: address_2, 4: address_3, 5: county_province,
-    ## #   6: postal_code
+    ## #   ¹​percent_brewpub_bar, ²​brewery_type, ³​address_2, ⁴​address_3, ⁵​county_province,
+    ## #   ⁶​postal_code
 
 A “brewpub” according is defined as a beer-focused restaurant or
 restaurant/bar with a brewery on-premise and “bar” is defined as a bar
@@ -384,10 +388,71 @@ combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
 summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
 ```
 
-    ## # A tibble: 2 x 5
+    ## # A tibble: 2 × 5
     ##   state        `mean(longitude)` `mean(latitude)` `sd(longitude)` `sd(latitude)`
     ##   <chr>                    <dbl>            <dbl>           <dbl>          <dbl>
     ## 1 North Dakota             -99.3             47.2            2.39          0.554
     ## 2 Wisconsin                -89.1             43.7            1.33          0.853
 
 ## Plots
+
+### Histogram
+
+We can use a continuous valued variable such as latitude or longitude.
+
+``` r
+combined_tibble2 <- combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
+  mutate(longitude = as.numeric(longitude))%>% 
+  mutate(latitude = as.numeric(latitude))
+
+ggplot(combined_tibble2, aes(x=latitude)) + geom_histogram(fill="green", col="orange")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+### Barplot
+
+We use a categorical variable we use fill as an aesthetic rather than an
+attribute
+
+``` r
+ggplot(combined_tibble2, aes(x=brewery_type, fill=brewery_type)) + geom_bar()
+```
+
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+### scatter plot
+
+We use the scatter plot to understand the distribution between two
+numeric columns which we is our longitude and latitude columns. We
+investigate how do the longitude vary with latitude.
+
+``` r
+ggplot(combined_tibble2, aes(y=longitude, x= latitude, col=brewery_type)) + geom_point()
+```
+
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+### Box plot
+
+In a box plot we try to investigate how a numerical value change with a
+categorical value. We choose latitude for the numerical value and
+brewery type for the categorical variable.
+
+``` r
+ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=brewery_type )) + geom_boxplot()
+```
+
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+``` r
+ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot()
+```
+
+![](README_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+
+``` r
+ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot() + facet_grid(~state)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->

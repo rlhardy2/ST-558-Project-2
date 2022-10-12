@@ -272,6 +272,37 @@ summarize(mean(longitude), mean(latitude), sd(longitude), sd(latitude))
 
 ## Plots
 
+### Histogram
+We can use a continuous valued variable such as latitude or longitude.
+```{r}
+combined_tibble2 <- combined_tibble%>%filter(longitude != "Na", latitude != "Na")%>%
+  mutate(longitude = as.numeric(longitude))%>% 
+  mutate(latitude = as.numeric(latitude))
 
+ggplot(combined_tibble2, aes(x=latitude)) + geom_histogram(fill="green", col="orange")
+```
+
+### Barplot
+We use a categorical variable we use fill as an aesthetic rather than an attribute
+```{r}
+ggplot(combined_tibble2, aes(x=brewery_type, fill=brewery_type)) + geom_bar()
+```
+
+### scatter plot
+We use the scatter plot to understand the distribution between two numeric columns which we is our longitude and latitude columns. We investigate how do the longitude vary with latitude.
+
+```{r}
+ggplot(combined_tibble2, aes(y=longitude, x= latitude, col=brewery_type)) + geom_point()
+```
+
+### Box plot
+In a box plot we try to investigate how a numerical value change with a categorical value. We choose latitude for the numerical value and brewery type for the categorical variable.
+```{r}
+ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=brewery_type )) + geom_boxplot()
+
+ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot()
+
+ggplot(combined_tibble2, aes(x = brewery_type, y = latitude, fill=state )) + geom_boxplot() + facet_grid(~state)
+```
 
 
